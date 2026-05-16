@@ -11,7 +11,7 @@ const CV_DATA = [
 
 export default function Experience() {
   return (
-    <section id="experience" className="grid grid-cols-1 lg:grid-cols-3 gap-16 border-t border-white/5 pt-48 w-full max-w-6xl">
+    <section id="experience" className="grid grid-cols-1 lg:grid-cols-3 gap-16 border-t border-white/5 pt-32 w-full">
       <div>
         <h2 className="text-2xl font-bold uppercase tracking-widest mb-4">Background</h2>
         <p className="text-gray-500 text-sm leading-relaxed">

@@ -29,7 +29,7 @@ export default function Home() {
             <Navbar />
             <Hero onEnter3D={() => setIs3DMode(true)} />
             
-            <div className="max-w-6xl mx-auto px-6 space-y-80 pb-64 w-full flex flex-col items-center">
+            <div className="max-w-6xl mx-auto px-6 space-y-[30vh] pb-[20vh] w-full flex flex-col items-center">
               <About />
               <Projects />
               <Experience />
