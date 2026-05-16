@@ -2,8 +2,8 @@
 
 export default function Footer() {
   return (
-    <footer className="w-full flex justify-center py-40 border-t border-white/5 mt-40">
-      <div className="w-full max-w-6xl px-6 flex flex-col items-center gap-16 text-center">
+    <footer className="w-full flex justify-center py-20 border-t border-white/5 mt-10">
+      <div className="w-full max-w-6xl px-6 flex flex-col items-center gap-12 text-center">
         
         {/* Social Links Container - Centered */}
         <div className="flex items-center justify-center gap-12 py-2">
@@ -21,7 +21,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright Section - Centered */}
-        <div className="w-full mt-12 pt-8 border-t border-white/[0.02] flex justify-center">
+        <div className="w-full mt-6 pt-8 border-t border-white/[0.02] flex justify-center">
           <p className="text-[10px] uppercase tracking-[0.5em] font-black text-gray-700 text-center px-4">
             © 2026 MADNER STUDIO // ALL RIGHTS RESERVED
           </p>

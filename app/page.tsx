@@ -14,7 +14,7 @@ export default function Home() {
   const [is3DMode, setIs3DMode] = useState(false);
 
   return (
-    <main className="bg-[#050505] text-white min-h-screen w-full font-sans selection:bg-white selection:text-black">
+    <main className="bg-[#050505] text-white min-h-screen w-full font-sans selection:bg-white selection:text-black flex flex-col items-center">
       <AnimatePresence mode="wait">
         {is3DMode ? (
           <ThreePlaceholder key="three" onBack={() => setIs3DMode(false)} />
@@ -30,22 +30,19 @@ export default function Home() {
             <Hero onEnter3D={() => setIs3DMode(true)} />
             
             {/* 
-                CORE CONTENT WRAPPER 
-                We use a centered flex column with massive margins between elements.
+                MANUAL SPACER STRATEGY
+                We use empty divs with fixed height to FORCE the gap.
             */}
-            <div className="w-full flex flex-col items-center px-6">
+            <div className="w-full max-w-6xl px-6 flex flex-col items-center">
               
-              <div className="w-full max-w-6xl mb-[400px]">
-                <About />
-              </div>
+              <About />
+              <div className="h-[200px] w-full" /> {/* Spacer */}
 
-              <div className="w-full max-w-6xl mb-[400px]">
-                <Projects />
-              </div>
+              <Projects />
+              <div className="h-[200px] w-full" /> {/* Spacer */}
 
-              <div className="w-full max-w-6xl mb-[400px]">
-                <Experience />
-              </div>
+              <Experience />
+              <div className="h-[100px] w-full" /> {/* Smaller gap before footer */}
 
             </div>
 
