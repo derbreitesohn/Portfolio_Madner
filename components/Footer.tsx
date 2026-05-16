@@ -4,18 +4,7 @@ export default function Footer() {
   return (
     <footer className="w-full py-24 border-t border-white/5 mt-32 relative flex flex-col items-center">
       
-      {/* 
-          Logo - Positioned absolutely to the left. 
-          This removes it from the flow so it doesn't "push" the centered items.
-      */}
-      <div className="md:absolute md:left-12 lg:left-24 top-24 mb-12 md:mb-0 text-xl font-black tracking-tighter text-white">
-        MADNER<span className="text-gray-500">.</span>
-      </div>
-
-      {/* 
-          Social Links Container - Centered horizontally by the parent's 'items-center'.
-          We use a flex row with 'justify-center' for double-certainty.
-      */}
+      {/* Social Links Container - Centered horizontally */}
       <div className="flex items-center justify-center gap-12 py-2">
         <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors" aria-label="GitHub">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
@@ -30,9 +19,7 @@ export default function Footer() {
         </a>
       </div>
 
-      {/* 
-          Copyright Section - Centered horizontally by 'flex justify-center'.
-      */}
+      {/* Copyright Section - Centered horizontally */}
       <div className="w-full mt-12 pt-8 border-t border-white/[0.02] flex justify-center">
         <p className="text-[10px] uppercase tracking-[0.5em] font-black text-gray-700 text-center px-4">
           © 2026 MADNER STUDIO // ALL RIGHTS RESERVED
