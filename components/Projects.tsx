@@ -28,7 +28,7 @@ export default function Projects() {
               transition={{ delay: i * 0.1 }}
               className="group block"
             >
-              <div className="aspect-video bg-gray-900/50 mb-6 relative overflow-hidden rounded-sm border border-white/5">
+              <div className="aspect-video bg-gray-900/50 mb-10 relative overflow-hidden rounded-sm border border-white/5">
                 <div className="absolute inset-0 bg-gradient-to-tr from-gray-950 to-gray-900 opacity-50" />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
                   <button className="px-6 py-2 bg-white text-black text-[10px] font-black uppercase tracking-widest">
@@ -36,12 +36,11 @@ export default function Projects() {
                   </button>
                 </div>
               </div>
-              
+
               <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-gray-400 transition-colors uppercase">{project.title}</h3>
-                  <div className="flex gap-2">
-                    {project.stack.map(s => (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold mb-4 group-hover:text-gray-400 transition-colors uppercase tracking-tight">{project.title}</h3>
+                  <div className="flex gap-2">                    {project.stack.map(s => (
                       <span key={s} className="text-[10px] px-2 py-0.5 border border-white/10 text-gray-500 uppercase font-bold tracking-tighter">
                         {s}
                       </span>
