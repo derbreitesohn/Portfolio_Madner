@@ -4,39 +4,35 @@ import { motion } from "framer-motion";
 
 export default function About() {
   return (
-    <section id="about" className="w-full flex flex-col items-center text-center pt-32">
+    <section id="about" className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center pt-20 w-full max-w-6xl">
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="max-w-3xl space-y-10"
+        className="space-y-6 text-center md:text-left flex flex-col items-center md:items-start"
       >
-        <h2 className="text-5xl md:text-8xl font-black tracking-tighter leading-none uppercase">
+        <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
           Crafting worlds, <br />line by line.
         </h2>
-        
-        <div className="w-16 h-[2px] bg-white mx-auto my-8" />
-        
-        <p className="text-gray-400 text-lg md:text-2xl leading-relaxed font-light">
+        <p className="text-gray-400 text-lg leading-relaxed max-w-lg">
           I bridge the gap between aesthetics and engineering. Whether it's a high-performance web application or an immersive 3D game world, I focus on creating polished, user-centric experiences.
         </p>
-        
-        <div className="pt-10 flex flex-col items-center gap-4">
-          <span className="text-[10px] uppercase tracking-[0.5em] font-black text-gray-600">Established // MMXXVI</span>
+        <div className="flex gap-4 pt-4">
+          <div className="h-[1px] w-12 bg-white self-center hidden md:block" />
+          <span className="text-xs uppercase tracking-[0.3em] font-bold text-gray-500">Biography</span>
         </div>
       </motion.div>
 
-      {/* Hero-style visual centered below text */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.2 }}
-        className="w-full max-w-5xl aspect-[16/9] bg-gray-900/30 mt-24 rounded-sm border border-white/5 flex items-center justify-center relative overflow-hidden"
+        className="aspect-square bg-gray-900 rounded-sm overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 relative group border border-white/5"
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40" />
-        <span className="text-gray-800 font-black text-4xl md:text-8xl tracking-tighter select-none opacity-20">SYSTEM_PREVIEW</span>
+        <div className="absolute inset-0 flex items-center justify-center text-gray-800 font-black text-9xl select-none">
+          IMG
+        </div>
+        <div className="absolute inset-0 border-[20px] border-black/50 pointer-events-none" />
       </motion.div>
     </section>
   );

@@ -29,8 +29,7 @@ export default function Home() {
             <Navbar />
             <Hero onEnter3D={() => setIs3DMode(true)} />
             
-            {/* Main Content Container - Explicitly Centered */}
-            <div className="w-full max-w-6xl px-6 flex flex-col items-center space-y-64 pb-64">
+            <div className="max-w-6xl mx-auto px-6 space-y-48 pb-32 w-full flex flex-col items-center">
               <About />
               <Projects />
               <Experience />
