@@ -14,7 +14,7 @@ export default function Home() {
   const [is3DMode, setIs3DMode] = useState(false);
 
   return (
-    <main className="bg-[#050505] text-white min-h-screen font-sans selection:bg-white selection:text-black">
+    <main className="bg-[#050505] text-white min-h-screen w-full font-sans selection:bg-white selection:text-black flex flex-col items-center">
       <AnimatePresence mode="wait">
         {is3DMode ? (
           <ThreePlaceholder key="three" onBack={() => setIs3DMode(false)} />
@@ -24,12 +24,13 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="relative"
+            className="w-full flex flex-col items-center"
           >
             <Navbar />
             <Hero onEnter3D={() => setIs3DMode(true)} />
             
-            <div className="max-w-6xl mx-auto px-6 space-y-64 pb-32">
+            {/* Main Content Container - Explicitly Centered */}
+            <div className="w-full max-w-6xl px-6 flex flex-col items-center space-y-64 pb-64">
               <About />
               <Projects />
               <Experience />
