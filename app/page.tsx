@@ -24,19 +24,29 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center w-full"
+            className="w-full flex flex-col items-center"
           >
             <Navbar />
             <Hero onEnter3D={() => setIs3DMode(true)} />
             
             {/* 
-                We remove 'space-y' here because the components now 
-                handle their own massive viewport-based padding.
+                CORE CONTENT WRAPPER 
+                We use a centered flex column with massive margins between elements.
             */}
-            <div className="max-w-6xl mx-auto px-6 w-full flex flex-col items-center">
-              <About />
-              <Projects />
-              <Experience />
+            <div className="w-full flex flex-col items-center px-6">
+              
+              <div className="w-full max-w-6xl mb-[400px]">
+                <About />
+              </div>
+
+              <div className="w-full max-w-6xl mb-[400px]">
+                <Projects />
+              </div>
+
+              <div className="w-full max-w-6xl mb-[400px]">
+                <Experience />
+              </div>
+
             </div>
 
             <Footer />
