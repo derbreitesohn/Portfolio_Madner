@@ -11,7 +11,7 @@ const PROJECTS = [
 
 export default function Projects() {
   return (
-    <section id="projects" className="space-y-12 w-full max-w-6xl">
+    <section id="projects" className="space-y-12 w-full max-w-6xl mb-32">
       <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-4 border-b border-white/5 pb-8">
         <h2 className="text-5xl font-black tracking-tighter uppercase">Selected Work</h2>
         <span className="text-xs font-mono text-gray-600 tracking-widest">NUM_ENTRIES [04]</span>
