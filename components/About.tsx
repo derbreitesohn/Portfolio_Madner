@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { cvData } from "../lib/data";
 
 export default function About() {
   return (
@@ -15,11 +16,14 @@ export default function About() {
           Crafting worlds, <br />line by line.
         </h2>
         <p className="text-gray-400 text-lg leading-relaxed max-w-lg">
-          I bridge the gap between aesthetics and engineering. Whether it's a high-performance web application or an immersive 3D game world, I focus on creating polished, user-centric experiences.
+          Hi, I'm {cvData.personalInfo.name}. I bridge the gap between aesthetics and engineering. Whether it's a high-performance web application, game, or an immersive 3D world, I focus on creating polished, user-centric experiences.
         </p>
-        <div className="flex gap-4 pt-4">
-          <div className="h-[1px] w-12 bg-white self-center hidden md:block" />
-          <span className="text-xs uppercase tracking-[0.3em] font-bold text-gray-500">Biography</span>
+        <div className="flex flex-wrap gap-2 pt-4">
+          {cvData.skills.advanced.map(skill => (
+            <span key={skill} className="text-xs uppercase tracking-widest font-bold text-gray-500 border border-white/10 px-3 py-1 bg-white/5">
+              {skill}
+            </span>
+          ))}
         </div>
       </motion.div>
 

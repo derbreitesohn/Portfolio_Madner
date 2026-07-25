@@ -2,12 +2,7 @@
 
 import { motion } from "framer-motion";
 
-const CV_DATA = [
-  { year: "2024 — Present", title: "Senior Game Engineer", company: "Aether Studios" },
-  { year: "2022 — 2024", title: "Full Stack Developer", company: "CyberSystems Inc." },
-  { year: "2020 — 2022", title: "Interactive Designer", company: "Studio Flux" },
-  { year: "2018 — 2020", title: "Bachelor of Game Design", company: "University of Arts" },
-];
+import { cvData } from "../lib/data";
 
 export default function Experience() {
   return (
@@ -21,7 +16,7 @@ export default function Experience() {
         </div>
 
         <div className="lg:col-span-2 space-y-12">
-          {CV_DATA.map((item, i) => (
+          {cvData.experience.map((item, i) => (
             <motion.div 
               key={i}
               initial={{ opacity: 0 }}
@@ -31,10 +26,28 @@ export default function Experience() {
               className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-8 last:border-0"
             >
               <div className="space-y-1">
-                <h3 className="text-xl font-bold uppercase">{item.title}</h3>
+                <h3 className="text-xl font-bold uppercase">{item.role}</h3>
                 <p className="text-gray-500 font-medium">{item.company}</p>
+                <p className="text-gray-600 text-xs mt-2">{item.description}</p>
               </div>
-              <span className="text-sm font-mono text-gray-600 md:text-right tabular-nums">{item.year}</span>
+              <span className="text-sm font-mono text-gray-600 md:text-right tabular-nums">{item.period}</span>
+            </motion.div>
+          ))}
+          <h2 className="text-2xl font-bold uppercase tracking-widest !mt-24 mb-8 border-t border-white/5 pt-16">Education</h2>
+          {cvData.education.map((item, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-8 last:border-0"
+            >
+              <div className="space-y-1">
+                <h3 className="text-xl font-bold uppercase">{item.degree}</h3>
+                <p className="text-gray-500 font-medium">{item.school}</p>
+              </div>
+              <span className="text-sm font-mono text-gray-600 md:text-right tabular-nums">{item.period}</span>
             </motion.div>
           ))}
         </div>

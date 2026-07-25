@@ -19,9 +19,9 @@ export default function Hero({ onEnter3D }: HeroProps) {
           MADNER<span className="text-gray-500">.</span>
         </h1>
         <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base font-medium tracking-[0.2em] text-gray-400 mb-12 uppercase">
-          <span>Designer</span>
+          <span>UI/UX</span>
           <span className="text-gray-700">/</span>
-          <span>Coder</span>
+          <span>Dev</span>
           <span className="text-gray-700">/</span>
           <span>Game Engineer</span>
         </div>
@@ -32,12 +32,6 @@ export default function Hero({ onEnter3D }: HeroProps) {
             className="px-8 py-4 bg-white text-black font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors duration-300 rounded-sm"
           >
             Enter 3D Museum (WIP)
-          </button>
-          <button 
-            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-            className="text-xs uppercase tracking-widest font-bold border-b-2 border-transparent hover:border-white transition-all py-2"
-          >
-            Scroll for Portfolio
           </button>
         </div>
       </motion.div>
