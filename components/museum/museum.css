@@ -1,0 +1,135 @@
+.museum {
+  --museum-cream: #eee9db;
+  --museum-muted: #b2bbae;
+  --museum-gold: #ddc38b;
+  position: fixed; inset: 0; z-index: 100; width: 100%; height: 100dvh;
+  background: #13231d; color: var(--museum-cream); font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400; line-height: 1.5; isolation: isolate; cursor: default;
+}
+.museum * { box-sizing: border-box; }
+.museum button, .museum a { cursor: pointer; font: inherit; color: inherit; text-decoration: none; }
+.museum button { border: 0; background: none; }
+.museum button:disabled { opacity: .45; cursor: wait; }
+.museum :focus-visible { outline: 2px solid var(--museum-gold); outline-offset: 5px; border-radius: 3px; }
+.museum-viewport, .museum-viewport canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+.museum-vignette { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, #07110bb3, transparent 23%, transparent 78%, #07110ba6); z-index: 1; }
+.museum-header { position: absolute; z-index: 5; top: 0; left: 0; width: 100%; padding: 28px 38px; display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+.museum-brand { display: flex; align-items: center; gap: 15px; font-size: 11px; letter-spacing: .2em; text-shadow: 0 1px 8px #0008; }
+.museum-brand small { display: block; font-size: 8px; letter-spacing: .16em; opacity: .6; margin-top: 4px; }
+.museum-monogram { border: 1px solid #eee9db50; border-radius: 50%; width: 43px; height: 43px; display: grid; place-items: center; font: italic 24px Georgia, serif; letter-spacing: -.1em; padding-right: 4px; }
+.museum-header nav { display: flex; align-items: center; gap: 10px; }
+.museum .museum-nav-button { display: flex; gap: 9px; align-items: center; padding: 10px 14px; border: 1px solid #eee9db28; border-radius: 4px; background: #0b1a1370; backdrop-filter: blur(12px); font-size: 12px; }
+.museum-nav-button small { font-size: 9px; opacity: .55; margin-left: 5px; }
+.museum .museum-icon-button { display: inline-flex; align-items: center; justify-content: center; padding: 10px; border-radius: 50%; }
+.museum button:hover:not(:disabled), .museum a:hover { filter: brightness(1.15); }
+.museum .museum-icon-button:hover { background: #ffffff10; }
+.museum-welcome { position: absolute; inset: 0; z-index: 3; overflow: hidden; }
+.museum-preview { object-fit: cover; object-position: center; }
+.museum-welcome-shade { position: absolute; inset: 0; background: linear-gradient(90deg, #0a1b16f5 0%, #0a1b16c9 37%, #0a1b1610 100%), linear-gradient(0deg, #0a1b1670, transparent 40%); }
+.museum-has-scene .museum-welcome-shade { background: linear-gradient(90deg, #0a1b16ed, #0a1b1690 36%, transparent 80%); }
+.museum-introduction { position: absolute; top: 50%; left: 8%; transform: translateY(-45%); width: min(560px, 80vw); }
+.museum-eyebrow { color: var(--museum-gold); font-size: 10px; letter-spacing: .23em; margin-bottom: 23px; }
+.museum h1 { font: 400 clamp(54px, 6.9vw, 100px)/.98 Georgia, 'Times New Roman', serif; letter-spacing: -.055em; }
+.museum h1 em { font-weight: 400; color: #d5dccb; }
+.museum-description { margin-top: 28px; font-size: 15px; line-height: 1.8; color: #c1cbbf; }
+.museum-load-label { margin-top: 32px; color: var(--museum-muted); font-size: 11px; }
+.museum-progress { width: 280px; max-width: 90%; background: #eee9db15; height: 2px; margin-top: 12px; }
+.museum-progress span { display: block; background: var(--museum-gold); height: 100%; transition: width .2s; }
+.museum-welcome-actions { display: flex; flex-wrap: wrap; gap: 23px; align-items: center; margin-top: 22px; }
+.museum .museum-primary { display: inline-flex; justify-content: center; align-items: center; gap: 26px; border-radius: 3px; padding: 15px 23px; background: var(--museum-cream); color: #1a3126; font-size: 12px; font-weight: 600; }
+.museum .museum-text-button { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; padding: 10px 0; color: #d2dbcc; }
+.museum-instructions { margin-top: 28px; font-size: 10px; color: #acb8aa; }
+.museum-welcome-caption { position: absolute; bottom: 30px; right: 38px; color: #cdd5c5a0; font-size: 8px; letter-spacing: .2em; }
+.museum-pause-wrap { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; pointer-events: none; background: #0c191b20; padding: 105px 20px 45px; }
+.museum-pause-card { width: min(450px, 100%); padding: 38px; border: 1px solid #e3e6cc25; border-radius: 7px; background: #101f19ed; backdrop-filter: blur(18px); text-align: center; box-shadow: 0 16px 80px #0004; pointer-events: auto; max-height: 100%; overflow: auto; }
+.museum-pause-card .museum-eyebrow { margin-bottom: 16px; }
+.museum h2 { font: 400 36px/1.15 Georgia, 'Times New Roman', serif; letter-spacing: -.035em; }
+.museum-pause-card > p:not(.museum-eyebrow) { color: var(--museum-muted); font-size: 13px; margin: 17px 0 25px; }
+.museum-pause-card > .museum-primary { width: 100%; margin-bottom: 10px; }
+.museum-pause-card > .museum-text-button { margin: 0 8px; }
+.museum-settings { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px; padding: 23px 0 18px; margin-top: 13px; border-top: 1px solid #ffffff15; font-size: 10px; color: var(--museum-muted); }
+.museum-settings button, .museum-settings label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.museum-settings input { accent-color: #bbcbad; width: 12px; height: 12px; }
+.museum-pause-card > small { display: block; font-size: 9px; color: #9eab9c; line-height: 1.7; }
+.museum-reticle { position: absolute; z-index: 2; width: 5px; height: 5px; border: 1px solid #fff9; background: #ffffff6b; border-radius: 50%; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; box-shadow: 0 0 5px #0008; }
+.museum-reticle-target { width: 13px; height: 13px; background: #edcf8120; border-color: #ead18f; }
+.museum .museum-interact { position: absolute; z-index: 4; top: calc(50% + 30px); left: 50%; transform: translateX(-50%); display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 13px; text-align: left; border: 1px solid #eee9db36; border-radius: 4px; background: #102119e8; backdrop-filter: blur(12px); padding: 14px 20px; min-width: 210px; max-width: 90%; font-size: 13px; }
+.museum-interact > span { grid-row: span 2; font: 24px Georgia, serif; color: var(--museum-gold); padding-right: 12px; border-right: 1px solid #ffffff25; }
+.museum-interact > small { color: var(--museum-muted); font-size: 9px; margin-top: 4px; }
+.museum-location { position: absolute; z-index: 2; bottom: 28px; left: 38px; color: #eceddb; width: 100px; pointer-events: none; text-align: center; }
+.museum-map { width: 90px; height: 90px; background: #15231f50; border-radius: 4px; }
+.museum-location > span { display: block; font-size: 7px; letter-spacing: .18em; margin-top: 10px; }
+.museum-walk-hint { position: absolute; z-index: 2; left: 50%; transform: translateX(-50%); bottom: 32px; font-size: 9px; letter-spacing: .06em; color: #e0e6d4bd; white-space: pre; pointer-events: none; }
+.museum-dialog { position: fixed; inset: 0; margin: auto; width: min(920px, calc(100% - 40px)); max-width: none; max-height: calc(100dvh - 60px); border: 1px solid #dddcc532; border-radius: 8px; background: #12221c; color: var(--museum-cream); overflow: auto; box-shadow: 0 30px 100px #0008; overscroll-behavior: contain; }
+.museum-dialog::backdrop { background: #05130dbf; backdrop-filter: blur(9px); }
+.museum-dialog-inner { padding: 40px; position: relative; }
+.museum .museum-close { position: absolute; right: 18px; top: 18px; background: #12221cd0; z-index: 2; }
+.museum-dialog .museum-eyebrow { margin-bottom: 12px; padding-right: 24px; }
+.museum-dialog-subtitle { margin: 14px 0 26px; color: var(--museum-muted); font-size: 12px; }
+.museum-project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 25px; }
+.museum .museum-project-cover { position: relative; display: block; width: 100%; aspect-ratio: 1.85; background: #09160f; overflow: hidden; border-radius: 4px; }
+.museum-project-cover img { object-fit: cover; object-position: center; transition: transform .4s; }
+.museum-project-cover:hover img { transform: scale(1.025); }
+.museum-project-cover > span { position: absolute; bottom: 8px; left: 8px; padding: 4px 8px; border-radius: 2px; background: #102018e3; color: var(--museum-gold); font-size: 8px; letter-spacing: .12em; }
+.museum-project-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 10px; }
+.museum h3 { font: 400 20px/1.2 Georgia, serif; }
+.museum-project-grid article > p { font-size: 10px; color: #97aa9a; margin-top: 2px; }
+.museum .museum-visit { display: flex; gap: 8px; align-items: center; font-size: 10px; margin-top: 15px; color: var(--museum-gold); }
+.museum .museum-collection-back { margin-bottom: 19px; }
+.museum-detail-image { width: 100%; aspect-ratio: 2; position: relative; background: #0a1710; margin-bottom: 30px; border-radius: 4px; overflow: hidden; }
+.museum-detail-image img { object-fit: contain; }
+.museum-project-description { max-width: 700px; color: #bcc8b9; font-size: 14px; line-height: 1.9; margin: 18px 0 24px; }
+.museum-tags { display: flex; gap: 8px; flex-wrap: wrap; list-style: none; }
+.museum-tags li { font-size: 10px; padding: 5px 10px; border: 1px solid #ffffff20; border-radius: 20px; color: #bcccba; }
+.museum-detail-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-top: 32px; }
+.museum-load-error { font-size: 12px; color: #f1d2b0; margin-top: 28px; max-width: 360px; }
+.museum-touch-controls { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.museum-joystick { position: absolute; bottom: max(45px, env(safe-area-inset-bottom)); left: 28px; width: 116px; height: 116px; border: 1px solid #eee9db40; border-radius: 50%; background: #17291e4a; pointer-events: auto; touch-action: none; display: grid; place-items: center; }
+.museum-joystick > span { display: block; width: 46px; height: 46px; border: 1px solid #eee9db70; background: #eee9db40; border-radius: 50%; }
+.museum-joystick small { position: absolute; bottom: -23px; font-size: 8px; letter-spacing: .2em; color: #dfe4d3b0; }
+.museum .museum-jump { pointer-events: auto; touch-action: none; position: absolute; bottom: 65px; right: 32px; border: 1px solid #eee9db60; border-radius: 50%; width: 65px; height: 65px; background: #17291e73; font-size: 11px; }
+@media (max-width: 700px) {
+  .museum-header { padding: 20px; gap: 6px; }
+  .museum-brand { gap: 8px; font-size: 9px; }
+  .museum-brand small { font-size: 6px; letter-spacing: .1em; }
+  .museum-monogram { width: 34px; height: 34px; font-size: 20px; }
+  .museum-header nav { gap: 6px; }
+  .museum .museum-nav-button { padding: 9px; gap: 6px; font-size: 10px; }
+  .museum-nav-button small { display: none; }
+  .museum-introduction { left: 8%; top: 49%; transform: translateY(-40%); width: 84%; }
+  .museum h1 { font-size: clamp(52px, 13vw, 80px); }
+  .museum-description { font-size: 13px; margin-top: 23px; }
+  .museum-eyebrow { font-size: 9px; margin-bottom: 20px; }
+  .museum-welcome-actions { gap: 12px; }
+  .museum .museum-primary { padding: 14px 19px; gap: 18px; font-size: 11px; }
+  .museum .museum-text-button { font-size: 11px; }
+  .museum-welcome-caption { left: 8%; right: auto; bottom: 23px; font-size: 7px; }
+  .museum-welcome-shade, .museum-has-scene .museum-welcome-shade { background: linear-gradient(90deg, #0a1b16e0, #0a1b1680); }
+  .museum-instructions { font-size: 9px; max-width: 275px; line-height: 1.8; }
+  .museum-dialog { width: calc(100% - 20px); max-height: calc(100dvh - 24px); }
+  .museum-dialog-inner { padding: 30px 22px; }
+  .museum-project-grid { gap: 26px; grid-template-columns: 1fr; }
+  .museum h2 { font-size: 31px; }
+  .museum-pause-card { padding: 30px 24px; }
+  .museum-detail-image { margin-top: 5px; aspect-ratio: 1.6; }
+  .museum .museum-close { right: 10px; top: 10px; }
+  .museum-location { bottom: 26px; left: 20px; width: 72px; }
+  .museum-map { width: 66px; height: 66px; }
+  .museum-walk-hint { bottom: 20px; font-size: 8px; max-width: 75%; white-space: normal; text-align: center; }
+}
+@media (pointer: coarse) {
+  .museum-location { top: 85px; right: 20px; left: auto; bottom: auto; width: 66px; }
+  .museum-map { width: 62px; height: 62px; }
+  .museum-location > span { font-size: 6px; margin-top: 3px; }
+}
+@media (max-height: 570px) {
+  .museum-introduction { transform: translateY(-35%); }
+  .museum h1 { font-size: 47px; }
+  .museum-description { margin-top: 15px; }
+  .museum-eyebrow, .museum-instructions, .museum-welcome-caption { display: none; }
+  .museum-load-label { margin-top: 18px; }
+  .museum-pause-wrap { padding-top: 85px; padding-bottom: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .museum *, .museum *::before, .museum *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import Image from "next/image";
 
 import { projectsData } from "../lib/data";
 
@@ -11,7 +11,7 @@ export default function Projects() {
       <div className="space-y-16">
         <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-4 border-b border-white/5 pb-8">
           <h2 className="text-5xl font-black tracking-tighter uppercase">Selected Work</h2>
-          <span className="text-xs font-mono text-gray-600 tracking-widest">NUM_ENTRIES [04]</span>
+          <span className="text-xs font-mono text-gray-600 tracking-widest">NUM_ENTRIES [{String(projectsData.length).padStart(2, "0")}]</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
@@ -25,10 +25,8 @@ export default function Projects() {
               className="group block"
             >
               <div className="aspect-video bg-gray-900/50 mb-10 relative overflow-hidden rounded-sm border border-white/5">
-                {/* @ts-ignore */}
                 {project.image ? (
-                  /* @ts-ignore */
-                  <img src={project.image} alt={project.title} className="w-full h-full object-cover object-center transition-all duration-700 hover:scale-105" />
+                  <Image src={project.image} alt={project.title} fill sizes="(max-width: 768px) 100vw, 550px" className="object-cover object-center transition-all duration-700 hover:scale-105" />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-tr from-gray-950 to-gray-900 opacity-50" />
                 )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -8,7 +9,7 @@ import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
-import ThreePlaceholder from "@/components/ThreePlaceholder";
+const MuseumExperience = dynamic(() => import("@/components/museum/MuseumExperience"), { ssr: false });
 
 export default function Home() {
   const [is3DMode, setIs3DMode] = useState(false);
@@ -17,7 +18,7 @@ export default function Home() {
     <main className="bg-[#050505] text-white min-h-screen w-full font-sans selection:bg-white selection:text-black flex flex-col items-center">
       <AnimatePresence mode="wait">
         {is3DMode ? (
-          <ThreePlaceholder key="three" onBack={() => setIs3DMode(false)} />
+          <MuseumExperience key="three" onBack={() => setIs3DMode(false)} />
         ) : (
           <motion.div
             key="standard"

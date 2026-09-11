@@ -31,7 +31,7 @@ export default function Hero({ onEnter3D }: HeroProps) {
             onClick={onEnter3D}
             className="px-8 py-4 bg-white text-black font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors duration-300 rounded-sm"
           >
-            Enter 3D Museum (WIP)
+            Enter 3D Museum
           </button>
         </div>
       </motion.div>

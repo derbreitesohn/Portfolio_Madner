@@ -1,0 +1,225 @@
+{
+  "source": "flooded-museum-15-refined.blend",
+  "sourceSha256": "65819d7395df1aac9f65a3495d22c9bc3f5736f2da96d469141dbcec017b6c4f",
+  "blender": "5.2.1 LTS",
+  "bakes": [
+    {
+      "object": "Museum_Ground_Underlay",
+      "resolution": 1024,
+      "image": "Museum_Ground_Underlay.png"
+    },
+    {
+      "object": "Museum_Base_MossEmitter",
+      "resolution": 2048,
+      "image": "Museum_Base_MossEmitter.png"
+    },
+    {
+      "object": "Museum_Base_Lower",
+      "resolution": 1024,
+      "image": "Museum_Base_Lower.png"
+    },
+    {
+      "object": "Museum_Walls_MossEmitter",
+      "resolution": 2048,
+      "image": "Museum_Walls_MossEmitter.png"
+    },
+    {
+      "object": "Museum_Arches_Small",
+      "resolution": 1024,
+      "image": "Museum_Arches_Small.png"
+    },
+    {
+      "object": "Museum_Arches_Large",
+      "resolution": 1024,
+      "image": "Museum_Arches_Large.png"
+    },
+    {
+      "object": "Museum_Pillars_Inner",
+      "resolution": 1024,
+      "image": "Museum_Pillars_Inner.png"
+    },
+    {
+      "object": "Museum_ArchSupports_Inner",
+      "resolution": 1024,
+      "image": "Museum_ArchSupports_Inner.png"
+    },
+    {
+      "object": "Museum_ArchSupports_Outer",
+      "resolution": 1024,
+      "image": "Museum_ArchSupports_Outer.png"
+    },
+    {
+      "object": "Museum_Pillars_Outer",
+      "resolution": 1024,
+      "image": "Museum_Pillars_Outer.png"
+    },
+    {
+      "object": "Gazebo_Columns_MossEmitter",
+      "resolution": 1024,
+      "image": "Gazebo_Columns_MossEmitter.png"
+    },
+    {
+      "object": "Gazebo_Floor",
+      "resolution": 1024,
+      "image": "Gazebo_Floor.png"
+    },
+    {
+      "object": "Gazebo_Base_MossEmitter",
+      "resolution": 1024,
+      "image": "Gazebo_Base_MossEmitter.png"
+    },
+    {
+      "object": "Gazebo_Finial",
+      "resolution": 1024,
+      "image": "Gazebo_Finial.png"
+    },
+    {
+      "object": "Gazebo_Dome",
+      "resolution": 1024,
+      "image": "Gazebo_Dome.png"
+    },
+    {
+      "object": "Rock_01",
+      "resolution": 512,
+      "image": "Rock_01.png"
+    },
+    {
+      "object": "Rock_02",
+      "resolution": 512,
+      "image": "Rock_02.png"
+    },
+    {
+      "object": "Rock_03",
+      "resolution": 512,
+      "image": "Rock_03.png"
+    },
+    {
+      "object": "Rock_04",
+      "resolution": 512,
+      "image": "Rock_04.png"
+    },
+    {
+      "object": "Rock_05",
+      "resolution": 512,
+      "image": "Rock_05.png"
+    },
+    {
+      "object": "Rock_06",
+      "resolution": 512,
+      "image": "Rock_06.png"
+    },
+    {
+      "object": "Rock_07",
+      "resolution": 512,
+      "image": "Rock_07.png"
+    },
+    {
+      "object": "Rock_08",
+      "resolution": 512,
+      "image": "Rock_08.png"
+    },
+    {
+      "object": "Rock_09",
+      "resolution": 512,
+      "image": "Rock_09.png"
+    },
+    {
+      "object": "Rock_10",
+      "resolution": 512,
+      "image": "Rock_10.png"
+    },
+    {
+      "object": "Rock_11",
+      "resolution": 512,
+      "image": "Rock_11.png"
+    },
+    {
+      "object": "Rock_12",
+      "resolution": 512,
+      "image": "Rock_12.png"
+    },
+    {
+      "object": "Rock_Cluster_001",
+      "resolution": 512,
+      "image": "Rock_Cluster_001.png"
+    },
+    {
+      "object": "Rock_Cluster_002",
+      "resolution": 512,
+      "image": "Rock_Cluster_002.png"
+    },
+    {
+      "object": "Rock_Cluster_004",
+      "resolution": 512,
+      "image": "Rock_Cluster_004.png"
+    }
+  ],
+  "collisionObjects": [
+    "Museum_Ground_Underlay",
+    "Museum_Base_MossEmitter",
+    "Museum_Base_Lower",
+    "Museum_Walls_MossEmitter",
+    "Museum_Pillars_Inner",
+    "Museum_ArchSupports_Inner",
+    "Museum_ArchSupports_Outer",
+    "Museum_Pillars_Outer",
+    "Gazebo_Columns_MossEmitter",
+    "Gazebo_Floor",
+    "Gazebo_Base_MossEmitter",
+    "Walkway_X",
+    "Walkway_Y",
+    "Rock_01",
+    "Rock_02",
+    "Rock_03",
+    "Rock_04",
+    "Rock_05",
+    "Rock_06",
+    "Rock_07",
+    "Rock_08",
+    "Rock_09",
+    "Rock_10",
+    "Rock_11",
+    "Rock_12",
+    "Rock_Cluster_001",
+    "Rock_Cluster_002",
+    "Rock_Cluster_003",
+    "Rock_Cluster_004",
+    "Rock_Cluster_005",
+    "Rock_Cluster_006",
+    "Rock_Cluster_007",
+    "Rock_Cluster_008",
+    "Rock_Cluster_009",
+    "Rock_Cluster_010",
+    "Rock_Cluster_011",
+    "Rock_Cluster_012",
+    "Rock_Cluster_013",
+    "Rock_Cluster_014",
+    "Rock_Cluster_015",
+    "Rock_Cluster_016",
+    "Rock_Cluster_017",
+    "Rock_Cluster_018",
+    "Rock_Cluster_019",
+    "Rock_Cluster_020",
+    "Rock_Cluster_021",
+    "Rock_Cluster_022",
+    "Rock_Cluster_023",
+    "Rock_Cluster_024",
+    "Rock_Cluster_025",
+    "Rock_Cluster_026",
+    "Rock_Cluster_027",
+    "Rock_Cluster_028",
+    "Rock_Cluster_029"
+  ],
+  "collisionTriangles": 18899,
+  "sourceUnchanged": true,
+  "notes": [
+    "Base colour bakes, not a full lighting bake.",
+    "Existing normal maps retain their original UV layer.",
+    "Shallow water is walkable; use jump to climb from pool to the gallery."
+  ],
+  "rawBytes": 69053624,
+  "webBytes": 15269648,
+  "textureLimit": 1024,
+  "sourceParticleSlots": 3681,
+  "visibleMossInstances": 2967
+}

@@ -16,7 +16,7 @@ export default function About() {
           Crafting worlds, <br />line by line.
         </h2>
         <p className="text-gray-400 text-lg leading-relaxed max-w-lg">
-          Hi, I'm {cvData.personalInfo.name}. I bridge the gap between aesthetics and engineering. Whether it's a high-performance web application, game, or an immersive 3D world, I focus on creating polished, user-centric experiences.
+          Hi, I&apos;m {cvData.personalInfo.name}. I bridge the gap between aesthetics and engineering. Whether it&apos;s a high-performance web application, game, or an immersive 3D world, I focus on creating polished, user-centric experiences.
         </p>
         <div className="flex flex-wrap gap-2 pt-4">
           {cvData.skills.advanced.map(skill => (
