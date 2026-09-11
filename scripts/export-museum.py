@@ -4,18 +4,20 @@ blender -b source.blend --python scripts/export-museum.py -- --out ../museum-exp
 Creates a browser-only .blend, a GLB, collision triangles, and provenance.
 """
 import bpy
+import bmesh
 import hashlib
 import json
 import math
 import sys
 from pathlib import Path
-from mathutils import Vector
+from mathutils import Matrix, Vector
+from mathutils.bvhtree import BVHTree
 
 OUT = Path(sys.argv[sys.argv.index('--out') + 1]).resolve()
 OUT.mkdir(parents=True, exist_ok=True)
 SOURCE = Path(bpy.data.filepath)
 SOURCE_HASH = hashlib.sha256(SOURCE.read_bytes()).hexdigest()
-CACHE = OUT / ('bakes-' + SOURCE_HASH[:12])
+CACHE = OUT / ('bakes-soft-stone-v2-' + SOURCE_HASH[:12])
 CACHE.mkdir(exist_ok=True)
 scene = bpy.context.scene
 scene.render.engine = 'CYCLES'
@@ -33,6 +35,57 @@ if lantern:
     lantern.hide_render = True
     lantern.hide_set(True)
 visible = [o for o in visible if o != lantern]
+# Legacy particle caches move when UVs/topology are evaluated during baking.
+# Snapshot Blender's displayed instances before those operations, in glTF axes.
+# The optimizer reinstates these exact world transforms after GLB export.
+axis = Matrix(((1, 0, 0, 0), (0, 0, 1, 0), (0, -1, 0, 0), (0, 0, 0, 1)))
+moss_instances = {}
+for instance in bpy.context.evaluated_depsgraph_get().object_instances:
+    if not instance.is_instance or not instance.parent or instance.object.original.name != 'Moss_Patch_Source':
+        continue
+    parent_name = instance.parent.original.name
+    if not parent_name.endswith('MossEmitter'):
+        continue
+    matrix = axis @ instance.matrix_world @ axis.inverted()
+    moss_instances.setdefault(parent_name + '.0', []).append([matrix[r][c] for c in range(4) for r in range(4)])
+(OUT / 'moss-instances.json').write_text(json.dumps(moss_instances, separators=(',', ':')))
+# Repair winding in the browser copy. UVs and object transforms are preserved.
+# Several joined arch/support faces pointed into their own solid volume.
+normal_repairs = {}
+seen_meshes = set()
+for obj in visible:
+    if obj.type != 'MESH' or not obj.name.startswith(('Museum_', 'Gazebo_', 'Walkway_', 'Rock_')):
+        continue
+    if any(s in obj.name for s in ('Glass', 'Lantern')) or obj.data.as_pointer() in seen_meshes:
+        continue
+    seen_meshes.add(obj.data.as_pointer())
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    before = [f.normal.copy() for f in bm.faces]
+    bmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))
+    changed = sum(a.dot(f.normal) < 0 for a, f in zip(before, bm.faces))
+    if changed:
+        bm.to_mesh(obj.data)
+        obj.data.update()
+        normal_repairs[obj.name] = changed
+    bm.free()
+# Surface normals let the web moss hug the stone instead of looking like small
+# horizontal shrubs stuck onto vertical columns. Use repaired geometry here.
+moss_surfaces = {}
+for name, matrices in moss_instances.items():
+    obj = bpy.data.objects[name[:-2]]
+    mesh = obj.data
+    mesh.calc_loop_triangles()
+    tree = BVHTree.FromPolygons([obj.matrix_world @ v.co for v in mesh.vertices],
+                               [list(t.vertices) for t in mesh.loop_triangles], all_triangles=True)
+    normals = []
+    for matrix in matrices:
+        point = Vector((matrix[12], -matrix[14], matrix[13]))
+        hit = tree.find_nearest(point)
+        normal = hit[1] if hit else Vector((0, 0, 1))
+        normals.append([normal.x, normal.z, -normal.y])
+    moss_surfaces[name] = normals
+(OUT / 'moss-surfaces.json').write_text(json.dumps(moss_surfaces, separators=(',', ':')))
 allowed = {'project_id', 'role', 'cast_shadow'}
 for datablocks in (bpy.data.objects, bpy.data.meshes, bpy.data.materials, bpy.data.scenes):
     for block in datablocks:
@@ -111,6 +164,19 @@ for index, obj in enumerate(targets):
         mat.name = original.name + '_Web_' + obj.name
         mesh.materials[slot] = mat
         tree = mat.node_tree
+        # The authoring AO ramp turned entire occluded faces almost black over
+        # a 5.7 m radius. Keep weathering, with only subtle local crevice colour;
+        # the browser's sun and environment provide the actual scene lighting.
+        for node in tree.nodes:
+            if node.type == 'AMBIENT_OCCLUSION':
+                node.inputs['Distance'].default_value = 0.65
+                for socket in node.outputs:
+                    for link in socket.links:
+                        if link.to_node.type == 'VALTORGB':
+                            ramp = link.to_node.color_ramp
+                            ceiling = max(max(e.color[:3]) for e in ramp.elements)
+                            for element in ramp.elements:
+                                element.color = tuple(max(c, ceiling * 0.78) for c in element.color[:3]) + (1.0,)
         bsdf = next((n for n in tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
         if not bsdf:
             raise RuntimeError('Missing Principled BSDF: ' + mat.name)
@@ -182,9 +248,10 @@ settings = dict(filepath=str(OUT / 'museum.raw.glb'), export_format='GLB',
 bpy.ops.export_scene.gltf(**settings)
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT / 'flooded-museum-15-browser.blend'))
 manifest = {'source': SOURCE.name, 'sourceSha256': SOURCE_HASH, 'blender': bpy.app.version_string,
+    'normalRepairs': normal_repairs, 'stoneBakeVersion': 'soft-stone-v2',
     'bakes': baked, 'collisionObjects': collision_names, 'collisionTriangles': len(colliders) // 9,
     'sourceUnchanged': hashlib.sha256(SOURCE.read_bytes()).hexdigest() == SOURCE_HASH,
-    'notes': ['Base colour bakes, not a full lighting bake.', 'Existing normal maps retain their original UV layer.',
+    'notes': ['Base colour bakes with gentle 0.65 m crevice shading, not a full lighting bake.', 'Existing normal maps retain their original UV layer.',
               'Shallow water is walkable; use jump to climb from pool to the gallery.']}
 (OUT / 'export-report.json').write_text(json.dumps(manifest, indent=2))
 print('EXPORT_READY', json.dumps(manifest), flush=True)

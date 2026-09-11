@@ -2,6 +2,21 @@
   "source": "flooded-museum-15-refined.blend",
   "sourceSha256": "65819d7395df1aac9f65a3495d22c9bc3f5736f2da96d469141dbcec017b6c4f",
   "blender": "5.2.1 LTS",
+  "normalRepairs": {
+    "Museum_Base_MossEmitter": 128,
+    "Museum_Base_Lower": 32,
+    "Museum_Walls_MossEmitter": 130,
+    "Museum_Arches_Small": 755,
+    "Museum_Arches_Large": 760,
+    "Museum_Pillars_Inner": 32,
+    "Museum_ArchSupports_Inner": 16,
+    "Museum_ArchSupports_Outer": 80,
+    "Museum_Pillars_Outer": 16,
+    "Gazebo_Columns_MossEmitter": 40,
+    "Gazebo_Base_MossEmitter": 2,
+    "Gazebo_Finial": 6
+  },
+  "stoneBakeVersion": "soft-stone-v2",
   "bakes": [
     {
       "object": "Museum_Ground_Underlay",
@@ -213,13 +228,43 @@
   "collisionTriangles": 18899,
   "sourceUnchanged": true,
   "notes": [
-    "Base colour bakes, not a full lighting bake.",
+    "Base colour bakes with gentle 0.65 m crevice shading, not a full lighting bake.",
     "Existing normal maps retain their original UV layer.",
     "Shallow water is walkable; use jump to climb from pool to the gallery."
   ],
-  "rawBytes": 69053624,
-  "webBytes": 15269648,
+  "rawBytes": 65282036,
+  "webBytes": 14635332,
   "textureLimit": 1024,
   "sourceParticleSlots": 3681,
-  "visibleMossInstances": 2967
+  "visibleMossInstances": 2771,
+  "maskedMossInstances": 714,
+  "floodedMossInstances": 196,
+  "mossGroups": [
+    {
+      "name": "Gazebo_Base_MossEmitter.0",
+      "source": 175,
+      "kept": 162,
+      "scaleFactor": 0.75
+    },
+    {
+      "name": "Gazebo_Columns_MossEmitter.0",
+      "source": 155,
+      "kept": 147,
+      "scaleFactor": 0.75
+    },
+    {
+      "name": "Museum_Base_MossEmitter.0",
+      "source": 1843,
+      "kept": 1660,
+      "scaleFactor": 0.62
+    },
+    {
+      "name": "Museum_Walls_MossEmitter.0",
+      "source": 1508,
+      "kept": 802,
+      "scaleFactor": 0.75
+    }
+  ],
+  "mossPlacement": "Evaluated Blender world transforms captured before UV baking",
+  "mossShape": "Surface-aligned patches, 30% normal depth; narrower patches on gazebo columns"
 }

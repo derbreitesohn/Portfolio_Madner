@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { collisionWorld, MuseumPlayer } from '../lib/museum/physics.ts';
+import { collisionWorld, MuseumPlayer, EYE_HEIGHT, GALLERY_EYE_Y } from '../lib/museum/physics.ts';
 
 const floor = [-50,0,-50, -50,0,50, 50,0,50, -50,0,-50, 50,0,50, 50,0,-50];
 function advance(player, seconds, strafe = 0, forward = 0, yaw = 0, jump = false) {
@@ -11,13 +11,14 @@ function advance(player, seconds, strafe = 0, forward = 0, yaw = 0, jump = false
 test('player settles on a floor and moves at the same speed diagonally', () => {
   const world = collisionWorld(floor);
   const player = new MuseumPlayer(world);
-  player.teleport(0, 2, 0);
+  player.teleport(0, EYE_HEIGHT + 0.3, 0);
   advance(player, 1);
-  assert.ok(Math.abs(player.eye.y - 1.7) < 0.015);
+  assert.ok(Math.abs(player.eye.y - EYE_HEIGHT) < 0.015);
   assert.ok(player.grounded);
   advance(player, 2, 0, 1);
   const straight = Math.hypot(player.eye.x, player.eye.z);
-  player.teleport(0, 1.71, 0);
+  assert.ok(straight > 12.5 && straight < 14, 'Courtyard walking pace is too slow or too fast');
+  player.teleport(0, EYE_HEIGHT + 0.01, 0);
   advance(player, 1);
   advance(player, 2, 1, 1);
   assert.ok(Math.abs(Math.hypot(player.eye.x, player.eye.z) - straight) < 0.02);
@@ -26,7 +27,7 @@ test('player settles on a floor and moves at the same speed diagonally', () => {
 test('outward facing wall blocks movement and allows sliding', () => {
   const wall = [-3,0,-3, 3,4,-3, 3,0,-3, -3,0,-3, -3,4,-3, 3,4,-3];
   const player = new MuseumPlayer(collisionWorld([...floor, ...wall]));
-  player.teleport(0, 1.71, 0);
+  player.teleport(0, EYE_HEIGHT + 0.01, 0);
   advance(player, 2, 0, 1);
   assert.ok(player.eye.z > -2.71 && player.eye.z < -2.65);
   advance(player, 0.4, 1, 1);
@@ -36,12 +37,12 @@ test('outward facing wall blocks movement and allows sliding', () => {
 
 test('jump returns to the floor; a long frame cannot tunnel through it', () => {
   const player = new MuseumPlayer(collisionWorld(floor));
-  player.teleport(0, 1.71, 0);
+  player.teleport(0, EYE_HEIGHT + 0.01, 0);
   advance(player, 1);
   advance(player, .3, 0, 0, 0, true);
-  assert.ok(player.eye.y > 2.7);
+  assert.ok(player.eye.y > EYE_HEIGHT + 1);
   advance(player, 2);
-  assert.ok(Math.abs(player.eye.y - 1.7) < .02);
+  assert.ok(Math.abs(player.eye.y - EYE_HEIGHT) < .02);
   player.teleport(0, 3, 0);
   player.step(5, 0, 0, 0, false, false);
   assert.ok(player.eye.y > 2.9);
@@ -52,11 +53,11 @@ test('actual museum entrance and all six frame visit positions have usable floor
   const world = collisionWorld(triangles);
   const player = new MuseumPlayer(world);
   advance(player, 1);
-  assert.ok(Math.abs(player.eye.y - 2.428) < .04, `Entrance y=${player.eye.y}`);
+  assert.ok(Math.abs(player.eye.y - (0.728 + EYE_HEIGHT)) < .04, `Entrance y=${player.eye.y}`);
   for (const x of [-22.625, 23.0525]) for (const z of [19.62851, .34106, -18.94638]) {
-    player.teleport(x, 2.44, z);
+    player.teleport(x, GALLERY_EYE_Y, z);
     advance(player, 1);
-    assert.ok(Math.abs(player.eye.y - 2.428) < .06, `Frame floor at ${x},${z}: y=${player.eye.y}`);
+    assert.ok(Math.abs(player.eye.y - (0.728 + EYE_HEIGHT)) < .06, `Frame floor at ${x},${z}: y=${player.eye.y}`);
     assert.ok(Math.abs(player.eye.x - x) < .1 && Math.abs(player.eye.z - z) < .1, 'Frame viewpoint overlaps architecture');
   }
 });
@@ -64,10 +65,20 @@ test('actual museum entrance and all six frame visit positions have usable floor
 test('actual museum walls contain the player and water has a shallow floor', () => {
   const { triangles } = JSON.parse(readFileSync(new URL('../public/museum/collision.json', import.meta.url)));
   const player = new MuseumPlayer(collisionWorld(triangles));
-  player.teleport(-26, 2.44, .34106);
+  player.teleport(-26, GALLERY_EYE_Y, .34106);
   advance(player, 3, -1, 0);
   assert.ok(player.eye.x >= -28.01 && player.eye.y > 2.3);
-  player.teleport(10, 2, 4);
+  player.teleport(10, GALLERY_EYE_Y, 4);
   advance(player, 2);
-  assert.ok(player.eye.y > 1.1 && player.eye.y < 1.2, `Pool eye height: ${player.eye.y}`);
+  assert.ok(player.eye.y > 2 && player.eye.y < 2.1, `Pool eye height: ${player.eye.y}`);
+});
+
+test('raised viewpoint remains coupled to the collider, with faster sprinting', () => {
+  const player = new MuseumPlayer(collisionWorld(floor));
+  player.teleport(0, EYE_HEIGHT + .01, 0);
+  advance(player, 1);
+  assert.ok(Math.abs(player.capsule.start.y - player.capsule.radius) < .02);
+  assert.ok(Math.abs(player.eye.y - player.capsule.end.y - player.capsule.radius) < 1e-6);
+  for (let i = 0; i < 120; i++) player.step(1/60, 0, 1, 0, false, true);
+  assert.ok(-player.eye.z > 18.5 && -player.eye.z < 20.1);
 });

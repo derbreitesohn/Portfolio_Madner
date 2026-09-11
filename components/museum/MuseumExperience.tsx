@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import { ArrowLeft, ArrowRight, ExternalLink, Grid2X2, Pause, RotateCcw, X } from "lucide-react";
 import { museumProjects, type MuseumProject } from "@/lib/museum/projects";
 import type { MuseumEngine, MuseumCallbacks } from "@/lib/museum/engine";
+import { SPAWN } from "@/lib/museum/physics";
 import "./museum.css";
 
 const Viewport = dynamic(() => import("./MuseumViewport"), { ssr: false });
@@ -72,7 +73,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
   const [panel, setPanel] = useState<"gallery" | MuseumProject | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [visited, setVisited] = useState(new Set<string>());
-  const [position, setPosition] = useState<[number, number, number]>([0, 2.44, 24]);
+  const [position, setPosition] = useState<[number, number, number]>([...SPAWN]);
   const [yaw, setYaw] = useState(0);
   const [balanced, setBalanced] = useState(false);
   const [atExhibit, setAtExhibit] = useState<MuseumProject | null>(null);

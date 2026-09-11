@@ -2,8 +2,13 @@ import { Box3, Triangle, Vector3 } from "three";
 import { Octree } from "three/addons/math/Octree.js";
 import { Capsule } from "three/addons/math/Capsule.js";
 
-export const EYE_HEIGHT = 1.7;
-export const SPAWN = [0, 2.44, 24] as const;
+// The museum is deliberately monumental. These scene units keep the viewpoint
+// above the planting and make crossing the 60-unit courtyard comfortable.
+export const EYE_HEIGHT = 2.6;
+export const WALK_SPEED = 6.8;
+export const SPRINT_SPEED = 10;
+export const GALLERY_EYE_Y = 0.74 + EYE_HEIGHT;
+export const SPAWN = [0, GALLERY_EYE_Y, 24] as const;
 const UP = new Vector3(0, 1, 0);
 
 // Large coplanar floor triangles make the stock Octree subdivide excessively.
@@ -70,7 +75,7 @@ export class MuseumPlayer {
   teleport(x: number, eyeY: number, z: number) {
     const foot = eyeY - EYE_HEIGHT;
     this.capsule.start.set(x, foot + 0.3, z);
-    this.capsule.end.set(x, foot + 1.4, z);
+    this.capsule.end.set(x, foot + EYE_HEIGHT - this.capsule.radius, z);
     this.velocity.set(0, 0, 0);
     this.grounded = false;
     this.updateEye();
@@ -86,7 +91,7 @@ export class MuseumPlayer {
     if (jump && this.grounded) this.velocity.y = 7.8;
     this.desired.set(strafe, 0, -forward);
     if (this.desired.lengthSq() > 1) this.desired.normalize();
-    this.desired.applyAxisAngle(UP, yaw).multiplyScalar(sprint ? 7 : 4.4);
+    this.desired.applyAxisAngle(UP, yaw).multiplyScalar(sprint ? SPRINT_SPEED : WALK_SPEED);
     for (let s = 0; s < steps; s++) {
       const blend = 1 - Math.exp(-14 * h);
       this.velocity.x += (this.desired.x - this.velocity.x) * blend;
