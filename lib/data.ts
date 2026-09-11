@@ -92,7 +92,7 @@ export const projectsData = [
     description:
       "Unity Game with Wwise integration and custom Blender models/animations. Project created during the 4th Creative Code Lab.",
     technologies: ["Unity", "C#", "Blender", "Wwise"],
-    link: "https://meniscus.vercel.app",
+    link: "https://github.com/derbreitesohn/Meniscus",
     image: "/projects/meniscus.png",
   },
   {

@@ -10,8 +10,7 @@ import json
 import math
 import sys
 from pathlib import Path
-from mathutils import Matrix, Vector
-from mathutils.bvhtree import BVHTree
+from mathutils import Matrix
 
 OUT = Path(sys.argv[sys.argv.index('--out') + 1]).resolve()
 OUT.mkdir(parents=True, exist_ok=True)
@@ -69,23 +68,6 @@ for obj in visible:
         obj.data.update()
         normal_repairs[obj.name] = changed
     bm.free()
-# Surface normals let the web moss hug the stone instead of looking like small
-# horizontal shrubs stuck onto vertical columns. Use repaired geometry here.
-moss_surfaces = {}
-for name, matrices in moss_instances.items():
-    obj = bpy.data.objects[name[:-2]]
-    mesh = obj.data
-    mesh.calc_loop_triangles()
-    tree = BVHTree.FromPolygons([obj.matrix_world @ v.co for v in mesh.vertices],
-                               [list(t.vertices) for t in mesh.loop_triangles], all_triangles=True)
-    normals = []
-    for matrix in matrices:
-        point = Vector((matrix[12], -matrix[14], matrix[13]))
-        hit = tree.find_nearest(point)
-        normal = hit[1] if hit else Vector((0, 0, 1))
-        normals.append([normal.x, normal.z, -normal.y])
-    moss_surfaces[name] = normals
-(OUT / 'moss-surfaces.json').write_text(json.dumps(moss_surfaces, separators=(',', ':')))
 allowed = {'project_id', 'role', 'cast_shadow'}
 for datablocks in (bpy.data.objects, bpy.data.meshes, bpy.data.materials, bpy.data.scenes):
     for block in datablocks:

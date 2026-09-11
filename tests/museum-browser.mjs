@@ -18,7 +18,7 @@ const waitReady = (page) => page.waitForFunction(() => document.querySelector('.
 const waitActive = (page) => page.waitForFunction(() => document.querySelector('.museum')?.dataset.active === 'true');
 const expected = [
   ['Pat Pat', 'https://patpat-three.vercel.app'],
-  ['Meniscus', 'https://meniscus.vercel.app'],
+  ['Meniscus', 'https://github.com/derbreitesohn/Meniscus'],
   ['Liji: Virtual Closet Tracker', 'https://github.com/derbreitesohn/Liji'],
   ['CCL1-PawsUp', 'https://derbreitesohn.github.io/CCL1-PawsUp/'],
   ['Portfolio_Madner', 'https://github.com/derbreitesohn/Portfolio_Madner'],

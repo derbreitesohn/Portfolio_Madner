@@ -23,24 +23,22 @@ function canvasTexture(width: number, height: number, draw: (ctx: CanvasRenderin
   return texture;
 }
 
-function artwork(project: MuseumProject, image?: HTMLImageElement) {
-  return canvasTexture(1024, 460, (ctx) => {
-    ctx.fillStyle = "#e9e5d8";
-    ctx.fillRect(0, 0, 1024, 460);
+function artwork(project: MuseumProject, aspect: number, image?: HTMLImageElement) {
+  const width = 1024, height = Math.round(width / aspect);
+  return canvasTexture(width, height, (ctx) => {
     if (image) {
-      const fit = Math.min(984 / image.width, 380 / image.height);
+      // Cover the opening without stretching or adding a mount/title strip.
+      const fit = Math.max(width / image.width, height / image.height);
       const w = image.width * fit, h = image.height * fit;
-      ctx.drawImage(image, (1024 - w) / 2, 14 + (380 - h) / 2, w, h);
+      ctx.drawImage(image, (width - w) / 2, (height - h) / 2, w, h);
     } else {
       ctx.fillStyle = "#526a54";
-      ctx.font = "80px Georgia";
-      ctx.fillText(project.number, 60, 200);
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = "#efe1b4";
+      ctx.textAlign = "center";
+      ctx.font = "60px Georgia";
+      ctx.fillText(project.title, width / 2, height / 2, width - 80);
     }
-    ctx.fillStyle = "#24392e";
-    ctx.font = "24px Georgia";
-    ctx.fillText(project.title, 25, 433, 865);
-    ctx.font = "18px sans-serif";
-    ctx.fillText(project.number, 963, 432);
   });
 }
 
@@ -133,11 +131,21 @@ export async function prepareModel(root: THREE.Group, scene: THREE.Scene, isDisp
     const box = new THREE.Box3().setFromObject(display);
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
+    const frame = root.getObjectByName(`Project_${project.number}_Frame`);
+    if (frame) {
+      const frameSize = new THREE.Box3().setFromObject(frame).getSize(new THREE.Vector3());
+      // The v15 frame relief is a normal map on a solid panel. Its inner rim
+      // surrounds 80% of the panel width and 73% of its height; the original
+      // Display marker was smaller and left a wide empty mount around it.
+      size.z = frameSize.z * 0.8;
+      size.y = frameSize.y * 0.73;
+    }
+    const aspect = size.z / size.y;
     const inward = center.x < 0 ? 1 : -1;
     display.visible = false;
     const plane = new THREE.Mesh(
       new THREE.PlaneGeometry(size.z, size.y),
-      new THREE.MeshBasicMaterial({ map: artwork(project), toneMapped: false }),
+      new THREE.MeshBasicMaterial({ map: artwork(project, aspect), toneMapped: false }),
     );
     plane.name = `Artwork_${project.id}`;
     plane.position.copy(center);
@@ -155,7 +163,7 @@ export async function prepareModel(root: THREE.Group, scene: THREE.Scene, isDisp
       await img.decode();
       if (isDisposed()) break;
       plane.material.map?.dispose();
-      plane.material.map = artwork(project, img);
+      plane.material.map = artwork(project, aspect, img);
       plane.material.needsUpdate = true;
     } catch { /* The title and modal remain fully usable without an image. */ }
 
@@ -183,10 +191,6 @@ export async function prepareModel(root: THREE.Group, scene: THREE.Scene, isDisp
       scene.add(label);
       pickables.push(label);
     }
-    const light = new THREE.SpotLight(0xffdfa7, 65, 14, 0.7, 0.8, 2);
-    light.position.copy(center).add(new THREE.Vector3(inward * 3, 2.7, 0));
-    light.target.position.copy(center);
-    scene.add(light, light.target);
   }
 
   // Linked ferns and rocks become GPU batches. Interactive named objects stay individual.
@@ -250,7 +254,7 @@ export async function prepareModel(root: THREE.Group, scene: THREE.Scene, isDisp
     water = new Water(new THREE.PlaneGeometry(dimensions.x, dimensions.z), {
       textureWidth: 512, textureHeight: 512, waterNormals: normalMap || undefined,
       sunDirection: new THREE.Vector3(0.52, 0.59, 0.62).normalize(),
-      sunColor: 0xffe5bf, waterColor: 0x227e9e, distortionScale: 0.35, fog: true,
+      sunColor: 0xffe5bf, waterColor: 0x1c6886, distortionScale: 0.35, fog: true,
     });
     water.position.copy(bounds.getCenter(new THREE.Vector3()));
     water.rotation.x = -Math.PI / 2;

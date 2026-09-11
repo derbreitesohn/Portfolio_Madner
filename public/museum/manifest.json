@@ -233,7 +233,7 @@
     "Shallow water is walkable; use jump to climb from pool to the gallery."
   ],
   "rawBytes": 65282036,
-  "webBytes": 14635332,
+  "webBytes": 14557980,
   "textureLimit": 1024,
   "sourceParticleSlots": 3681,
   "visibleMossInstances": 2771,
@@ -266,5 +266,5 @@
     }
   ],
   "mossPlacement": "Evaluated Blender world transforms captured before UV baking",
-  "mossShape": "Surface-aligned patches, 30% normal depth; narrower patches on gazebo columns"
+  "mossShape": "Original Blender rotations and proportions; uniform scale reduction only"
 }

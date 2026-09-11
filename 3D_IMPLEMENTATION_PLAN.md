@@ -15,16 +15,18 @@ The placeholder is now a playable Three.js museum inside the existing Next.js po
 ## September 11 visual polish
 
 - Repaired 1,997 reversed architectural faces in the generated browser copy. Re-baked the stone with a 0.65-unit AO radius and a gentle ramp instead of the source's 5.7-unit radius and black ramp. Stone normal strength is 0.48 in the browser. The sunlight direction, intensity, and shadow setup are unchanged.
-- Blue pool body colour with animated reflections and warm sun glints. The stock Water shader's warm diffuse contribution no longer washes the pool brown. Leaf cards sit just above the water and use alpha cutouts.
-- Captured Blender's evaluated particle transforms before UV baking so the export cannot move the moss. Removed 196 submerged/open-pool instances; retained 2,771 visible patches. Patches follow the stone surface, with reduced depth and smaller footprints on columns.
+- Darker blue pool body colour (`#1c6886`) with animated reflections and warm sun glints. The stock Water shader's warm diffuse contribution no longer washes the pool brown. Leaf cards sit just above the water and use alpha cutouts.
+- Captured Blender's evaluated particle transforms before UV baking so the export cannot move the moss. Removed 196 submerged/open-pool instances; retained 2,771 visible patches. Preserve the original rotations and height-to-width proportions, with uniform size reduction only. Flattening these upright plant cards makes them look like crossed slivers.
 - Eye height is 2.6 scene units, walking speed 6.8 units/second, sprint 10. The collider, entrance and frame visit positions use the same height. The previous eye height was 1.7 and walking speed 4.4.
 - Plaque lettering is transparent text on the actual sloped face, fitted from the exported vertices. No solid label panel; the text follows the approximately 24-degree upward tilt. Bronze roughness/normal strength are tuned for legibility.
+- Removed the six unmounted picture spotlights; the building's sun and sky provide the lighting. Images fill the frame's inner relief (80% of the frame width, 73% of its height), cropped to cover without added white borders or a title strip. The plaque carries the title. White backgrounds already present in project images remain part of those images.
+- Meniscus links to `https://github.com/derbreitesohn/Meniscus` in both the museum and the 2D portfolio.
 
 ## Which Blender file to edit
 
 Keep editing **`flooded-museum-15-refined.blend`** in Downloads. It was read without saving over it. `public/museum/manifest.json` records its SHA-256 hash.
 
-The separate **`museum-preparation/web/polished-export/flooded-museum-15-browser.blend`** contains the repaired geometry and baked export materials. It is generated; changes made there will be replaced when the pipeline runs again. All its images are packed. The final moss filtering and surface alignment happen in the GLB optimizer; this blend is an intermediate export file.
+The separate **`museum-preparation/web/polished-export/flooded-museum-15-browser.blend`** contains the repaired geometry and baked export materials. It is generated; changes made there will be replaced when the pipeline runs again. All its images are packed. The final moss filtering and restoration of particle transforms happen in the GLB optimizer; this blend is an intermediate export file.
 
 The exporter creates `UV_WebColor` for 30 shared mesh assets and bakes procedural stone/rock base colours using Cycles Emission baking. Original normal maps retain their original UV layer. Weathering remains, with softened local AO; this is **not a Combined lighting bake**.
 
@@ -33,7 +35,7 @@ The optimizer creates `public/museum/museum.glb` with:
 - WebP colour textures and lossless WebP normal textures, capped at 1024 pixels per dimension.
 - MikkTSpace tangents generated after triangulation where Blender could not provide them.
 - Meshopt geometry compression; the decoder ships locally with the app.
-- 2,771 visible moss instances from 3,681 particle slots. Removed 714 invisible density-masked slots and 196 submerged/open-pool patches. Preserved positions come from `moss-instances.json`, with attachment normals in `moss-surfaces.json`.
+- 2,771 visible moss instances from 3,681 particle slots. Removed 714 invisible density-masked slots and 196 submerged/open-pool patches. Preserved positions, rotations and proportions come from `moss-instances.json`.
 - Archive geometry and the stray lantern outside the building excluded. Add-on metadata stripped; project IDs and roles retained.
 
 The model is approximately **14.6 MB**, plus a 1.5 MB collision file, preview and project images. GPU memory use is larger than the compressed download.

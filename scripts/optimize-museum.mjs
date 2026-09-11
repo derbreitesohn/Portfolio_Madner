@@ -15,7 +15,6 @@ await Promise.all([MeshoptEncoder.ready, MikkTSpace.ready]);
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.encoder': MeshoptEncoder});
 const document = await io.read(path.join(source, 'museum.raw.glb'));
 const mossSnapshot = JSON.parse(await readFile(path.join(source, 'moss-instances.json'), 'utf8'));
-const mossSurfaces = JSON.parse(await readFile(path.join(source, 'moss-surfaces.json'), 'utf8'));
 let sourceParticleSlots = 0, visibleMossInstances = 0, maskedMossInstances = 0, floodedMossInstances = 0;
 const mossGroups = [];
 for (const node of document.getRoot().listNodes()) {
@@ -35,13 +34,8 @@ for (const node of document.getRoot().listNodes()) {
       return;
     }
     local.decompose(t, q, s);
-    const normal = new Vector3().fromArray(mossSurfaces[node.getName()][i]).transformDirection(inverseWorld);
-    q.setFromUnitVectors(new Vector3(0, 1, 0), normal.normalize())
-      .multiply(new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), i * 2.399963229728653));
-    // Moss is a thin growth on a surface, not a waist-high bush. Narrow patches
-    // on the gazebo columns also avoid shelves of leaves hanging into the path.
-    s.y *= 0.3;
-    if (node.getName().startsWith('Gazebo_Columns_')) { s.x *= 0.45; s.z *= 0.45; }
+    // Keep the artist's rotation and proportions. These are upright alpha
+    // cards, not a flat decal: rotating and squashing them exposes their edges.
     instances.getAttribute('TRANSLATION').setElement(i, t.toArray());
     instances.getAttribute('ROTATION').setElement(i, q.toArray());
     instances.getAttribute('SCALE').setElement(i, s.toArray());
@@ -109,7 +103,7 @@ report.maskedMossInstances = maskedMossInstances;
 report.floodedMossInstances = floodedMossInstances;
 report.mossGroups = mossGroups;
 report.mossPlacement = 'Evaluated Blender world transforms captured before UV baking';
-report.mossShape = 'Surface-aligned patches, 30% normal depth; narrower patches on gazebo columns';
+report.mossShape = 'Original Blender rotations and proportions; uniform scale reduction only';
 await writeFile(path.join(target, 'manifest.json'), JSON.stringify(report, null, 2));
 // This preview is the owner's rendered museum, also the portfolio frame's artwork.
 await sharp(path.resolve('../museum-preparation/v15/overview.png')).resize(1440).webp({quality:85}).toFile(path.join(target, 'preview.webp'));
