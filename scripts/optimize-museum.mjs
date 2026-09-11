@@ -14,6 +14,11 @@ await mkdir(target, { recursive: true });
 await Promise.all([MeshoptEncoder.ready, MikkTSpace.ready]);
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.encoder': MeshoptEncoder});
 const document = await io.read(path.join(source, 'museum.raw.glb'));
+// The particle template is needed during Blender export, but is not a placed
+// exhibit plant. Remove only its standalone node; instances keep its shared mesh.
+for (const node of document.getRoot().listNodes()) {
+  if (node.getName() === 'Moss_Patch_Source') node.dispose();
+}
 const mossSnapshot = JSON.parse(await readFile(path.join(source, 'moss-instances.json'), 'utf8'));
 let sourceParticleSlots = 0, visibleMossInstances = 0, maskedMossInstances = 0, floodedMossInstances = 0;
 const mossGroups = [];
@@ -104,6 +109,7 @@ report.floodedMossInstances = floodedMossInstances;
 report.mossGroups = mossGroups;
 report.mossPlacement = 'Evaluated Blender world transforms captured before UV baking';
 report.mossShape = 'Original Blender rotations and proportions; uniform scale reduction only';
+report.excludedSourceObjects = ['Moss_Patch_Source'];
 await writeFile(path.join(target, 'manifest.json'), JSON.stringify(report, null, 2));
 // This preview is the owner's rendered museum, also the portfolio frame's artwork.
 await sharp(path.resolve('../museum-preparation/v15/overview.png')).resize(1440).webp({quality:85}).toFile(path.join(target, 'preview.webp'));

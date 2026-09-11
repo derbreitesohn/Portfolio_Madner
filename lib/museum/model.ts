@@ -3,6 +3,7 @@ import { Water } from "three/addons/objects/Water.js";
 import { museumProjects, type MuseumProject } from "./projects";
 import { GALLERY_EYE_Y } from "./physics";
 import { plaqueSurface } from "./plaque";
+import { prepareGalleryFloor } from "./floor";
 
 export type Exhibit = {
   project: MuseumProject;
@@ -124,6 +125,8 @@ export async function prepareModel(root: THREE.Group, scene: THREE.Scene, isDisp
       pickables.push(object);
     }
   });
+
+  prepareGalleryFloor(root, scene);
 
   for (const project of museumProjects) {
     const display = root.getObjectByName(`Project_${project.number}_Display`);

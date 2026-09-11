@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:museum": "node --test tests/museum-physics.test.mjs",
+    "test:museum": "node --test tests/museum-*.test.mjs",
     "test:museum:assets": "node scripts/validate-museum.mjs",
     "test:museum:browser": "node tests/museum-browser.mjs",
     "museum:optimize": "node scripts/optimize-museum.mjs"

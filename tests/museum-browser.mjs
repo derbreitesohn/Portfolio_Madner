@@ -82,10 +82,12 @@ try {
   await desktop.waitForTimeout(500);
   await desktop.screenshot({path:`${out}/museum-walk.png`});
   await desktop.keyboard.press('Escape');
-  await desktop.getByRole('button', {name:'Portfolio',exact:true}).click();
+  await desktop.locator('.museum-pause-card').getByRole('button', {name:'Back to portfolio',exact:true}).click();
   await desktop.waitForURL(base + '/');
   await desktop.locator('.museum').waitFor({state:'hidden'});
   assert.equal(await desktop.locator('.museum').count(), 0);
+  await desktop.getByRole('button', {name:'Enter 3D Museum',exact:true}).waitFor();
+  assert.equal(await desktop.evaluate(() => document.body.style.overflow), '', 'Static portfolio remains scroll locked');
   report.desktop = { movementBefore:before, movementAfter:after, pauseStopsMovement:true, frames, keyboardAndMouseInteraction:true, returnedToPortfolio:true };
   console.log('Desktop walkthrough: passed');
   await desktop.close();
@@ -120,7 +122,12 @@ try {
   await mobile.getByRole('dialog',{name:'CCL1-PawsUp',exact:true}).waitFor();
   await mobile.screenshot({path:`${out}/museum-mobile-project.png`});
   assert.ok(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Mobile page overflows horizontally');
-  report.mobile = {movementBefore:mobileBefore,movementAfter:mobileAfter,touchProjectOpened:true,noHorizontalOverflow:true};
+  await mobile.getByRole('button',{name:'Close dialog',exact:true}).tap();
+  await mobile.getByRole('navigation',{name:'Museum navigation'}).getByRole('button',{name:'Back to portfolio',exact:true}).tap();
+  await mobile.waitForURL(base + '/');
+  await mobile.getByRole('button',{name:'Enter 3D Museum',exact:true}).waitFor();
+  assert.equal(await mobile.locator('.museum').count(), 0);
+  report.mobile = {movementBefore:mobileBefore,movementAfter:mobileAfter,touchProjectOpened:true,noHorizontalOverflow:true,returnedFromDirectRoute:true};
   console.log('Mobile touch walkthrough: passed');
   await mobile.close();
 

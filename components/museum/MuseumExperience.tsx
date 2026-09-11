@@ -107,6 +107,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
   }, []);
 
   const play = () => { setEntered(true); setAtExhibit(null); engine.current?.play(); };
+  const leaveMuseum = () => { engine.current?.pause(); onBack(); };
   const gallery = () => { engine.current?.pause(); setPanel("gallery"); };
   const visit = (project: MuseumProject) => {
     engine.current?.visit(project.id);
@@ -126,7 +127,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
       <nav aria-label="Museum navigation">
         <button className="museum-nav-button" onClick={gallery}><Grid2X2 size={16} /><span>Gallery</span><small>{visited.size}/06</small></button>
         {active && <button className="museum-icon-button" onClick={() => engine.current?.pause()} aria-label="Pause exploration"><Pause size={18} /></button>}
-        <button className="museum-nav-button" onClick={() => { engine.current?.pause(); onBack(); }}><ArrowLeft size={16} /><span>Portfolio</span></button>
+        <button className="museum-nav-button museum-exit" onClick={leaveMuseum}><ArrowLeft size={16} /><span>Back to portfolio</span></button>
       </nav>
     </header>
 
@@ -160,6 +161,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
         </button>
         {atExhibit && <button className="museum-text-button" onClick={() => openProject(atExhibit.id)}>Read about this project</button>}
         <button className="museum-text-button" onClick={gallery}>Choose a project</button>
+        <button className="museum-secondary museum-pause-exit" onClick={leaveMuseum}><ArrowLeft size={16} /> Back to portfolio</button>
         <div className="museum-settings">
           <button onClick={() => { engine.current?.reset(); setAtExhibit(null); }}><RotateCcw size={13} /> Return to entrance</button>
           <label><input type="checkbox" checked={balanced} onChange={(e) => { setBalanced(e.target.checked); engine.current?.setQuality(e.target.checked); }} /> Lighter graphics</label>
@@ -172,7 +174,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
       <div className={`museum-reticle ${hoveredProject ? "museum-reticle-target" : ""}`} aria-hidden="true" />
       {hoveredProject && <button className="museum-interact" onClick={() => openProject(hoveredProject.id)}><span>{hoveredProject.number}</span>{hoveredProject.title}<small>{touch ? "Tap to explore" : "Click or E to explore"}</small></button>}
       <div className="museum-location"><MuseumMap position={position} yaw={yaw} visited={visited} /><span>{Math.abs(position[0]) > 20 || Math.abs(position[2]) > 20 ? "THE GALLERIES" : "THE COURTYARD"}</span></div>
-      <p className="museum-walk-hint">{touch ? "Drag the scene to look around" : "WASD · Walk     SPACE · Jump     ESC · Pause     G · Gallery"}</p>
+      <p className="museum-walk-hint">{touch ? "Drag the scene to look around" : "WASD · Walk     SPACE · Jump     ESC · Pause / exit     G · Gallery"}</p>
       {touch && <div className="museum-touch-controls"><Joystick move={(x, y) => engine.current?.setStick(x, y)} /><button onPointerDown={() => engine.current?.requestJump()} className="museum-jump">Jump ↑</button></div>}
     </>}
 

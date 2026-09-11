@@ -21,6 +21,9 @@ The placeholder is now a playable Three.js museum inside the existing Next.js po
 - Plaque lettering is transparent text on the actual sloped face, fitted from the exported vertices. No solid label panel; the text follows the approximately 24-degree upward tilt. Bronze roughness/normal strength are tuned for legibility.
 - Removed the six unmounted picture spotlights; the building's sun and sky provide the lighting. Images fill the frame's inner relief (80% of the frame width, 73% of its height), cropped to cover without added white borders or a title strip. The plaque carries the title. White backgrounds already present in project images remain part of those images.
 - Meniscus links to `https://github.com/derbreitesohn/Meniscus` in both the museum and the 2D portfolio.
+- Excluded the oversized standalone `Moss_Patch_Source` from the final GLB while retaining all 2,771 placed patches. Keep the source object in the authoring blend so Blender can still instance it; the optimizer removes the visible source copy after export.
+- Replaced the gallery's stretched colour/normal atlas on its 256 upward floor triangles with repeating weathered stone slabs, fine grain, matte roughness and subtle normal relief. `lib/museum/floor.ts` uses world-space UVs at a consistent scale, retaining the exact floor positions and collisions. The base edges and moss parent remain intact.
+- Both the header and pause menu have a clear **Back to portfolio** button. Press Esc while walking to release the mouse and show the pause menu. Both the home-page museum and direct `/museum` route return to the static portfolio.
 
 ## Which Blender file to edit
 
@@ -36,7 +39,7 @@ The optimizer creates `public/museum/museum.glb` with:
 - MikkTSpace tangents generated after triangulation where Blender could not provide them.
 - Meshopt geometry compression; the decoder ships locally with the app.
 - 2,771 visible moss instances from 3,681 particle slots. Removed 714 invisible density-masked slots and 196 submerged/open-pool patches. Preserved positions, rotations and proportions come from `moss-instances.json`.
-- Archive geometry and the stray lantern outside the building excluded. Add-on metadata stripped; project IDs and roles retained.
+- Archive geometry, the stray lantern outside the building and the standalone moss source excluded. Add-on metadata stripped; project IDs and roles retained.
 
 The model is approximately **14.6 MB**, plus a 1.5 MB collision file, preview and project images. GPU memory use is larger than the compressed download.
 

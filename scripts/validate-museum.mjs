@@ -64,7 +64,7 @@ for (const node of instances) {
     }
   }
 }
-assert.ok(!root.listNodes().some((n) => /Archive|Museum_Lantern/.test(n.getName())), 'Archive geometry leaked into export');
+assert.ok(!root.listNodes().some((n) => /Archive|Museum_Lantern|^Moss_Patch_Source$/.test(n.getName())), 'Archive or standalone particle source leaked into export');
 let nonfinite = 0;
 for (const accessor of root.listAccessors()) {
   const array = accessor.getArray();
