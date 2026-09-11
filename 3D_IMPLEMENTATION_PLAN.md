@@ -22,8 +22,10 @@ The placeholder is now a playable Three.js museum inside the existing Next.js po
 - Removed the six unmounted picture spotlights; the building's sun and sky provide the lighting. Images fill the frame's inner relief (80% of the frame width, 73% of its height), cropped to cover without added white borders or a title strip. The plaque carries the title. White backgrounds already present in project images remain part of those images.
 - Meniscus links to `https://github.com/derbreitesohn/Meniscus` in both the museum and the 2D portfolio.
 - Excluded the oversized standalone `Moss_Patch_Source` from the final GLB while retaining all 2,771 placed patches. Keep the source object in the authoring blend so Blender can still instance it; the optimizer removes the visible source copy after export.
-- Replaced the gallery's stretched colour/normal atlas on its 256 upward floor triangles with repeating weathered stone slabs, fine grain, matte roughness and subtle normal relief. `lib/museum/floor.ts` uses world-space UVs at a consistent scale, retaining the exact floor positions and collisions. The base edges and moss parent remain intact.
+- The gallery and waterside step keep the artist's `MAT_Base_WeatheredStone` dirt/stone bakes and original UVs. `lib/museum/floor.ts` only reduces normal strength to 0.12 and sets matte roughness to 0.92. The gallery colour atlas retains its full 2048 resolution. No replacement tile material, extra floor geometry or collision changes.
 - Both the header and pause menu have a clear **Back to portfolio** button. Press Esc while walking to release the mouse and show the pause menu. Both the home-page museum and direct `/museum` route return to the static portfolio.
+- September 12: the museum UI matches the live portfolio's system sans-serif font, heavy headings, MADNER wordmark and black/white/grey palette. The minimap, movement controls and gallery flow remain available.
+- Grounded 21 floating ferns against the actual gallery, gazebo and rock surfaces during optimization. Stem bases sit slightly inside the stone. A fern on a submerged rock edge moves a short distance onto its dry top. Hanging roof ferns, particle moss, plant rotation and scale remain as authored. The manifest records each correction, and validation checks the compressed attachment points against collision geometry.
 
 ## Which Blender file to edit
 
@@ -35,13 +37,13 @@ The exporter creates `UV_WebColor` for 30 shared mesh assets and bakes procedura
 
 The optimizer creates `public/museum/museum.glb` with:
 
-- WebP colour textures and lossless WebP normal textures, capped at 1024 pixels per dimension.
+- WebP colour textures and lossless WebP normal textures, capped at 1024 pixels per dimension except the floor colour bakes, which preserve up to 2048.
 - MikkTSpace tangents generated after triangulation where Blender could not provide them.
 - Meshopt geometry compression; the decoder ships locally with the app.
 - 2,771 visible moss instances from 3,681 particle slots. Removed 714 invisible density-masked slots and 196 submerged/open-pool patches. Preserved positions, rotations and proportions come from `moss-instances.json`.
 - Archive geometry, the stray lantern outside the building and the standalone moss source excluded. Add-on metadata stripped; project IDs and roles retained.
 
-The model is approximately **14.6 MB**, plus a 1.5 MB collision file, preview and project images. GPU memory use is larger than the compressed download.
+The model is approximately **14.9 MB**, plus a 1.5 MB collision file, preview and project images. GPU memory use is larger than the compressed download.
 
 ## Re-export after editing Blender
 

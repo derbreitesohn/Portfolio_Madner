@@ -233,8 +233,221 @@
     "Shallow water is walkable; use jump to climb from pool to the gallery."
   ],
   "rawBytes": 65282036,
-  "webBytes": 14557704,
+  "webBytes": 14903584,
   "textureLimit": 1024,
+  "floorTextureLimit": 2048,
+  "groundedPlants": [
+    {
+      "name": "Fern_01",
+      "support": "Gazebo_Base_MossEmitter",
+      "originalGap": 0.2819314216226618,
+      "root": [
+        -4.06604000935262,
+        0.2786349720954895,
+        3.8586879182413623
+      ]
+    },
+    {
+      "name": "Fern_04",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.10407708583597208,
+      "root": [
+        -25.197567586685672,
+        0.6994422460838735,
+        -22.947203707957023
+      ]
+    },
+    {
+      "name": "Fern_07",
+      "support": "Rock_11",
+      "originalGap": 0.7341347089403178,
+      "root": [
+        12.948535021613626,
+        0.11652209463957354,
+        -14.377342785105986
+      ]
+    },
+    {
+      "name": "Fern_Bracken_01",
+      "support": "Gazebo_Base_MossEmitter",
+      "originalGap": 0.20787635445594788,
+      "root": [
+        3.607101798057556,
+        0.2786349720954895,
+        4.790641881846748
+      ]
+    },
+    {
+      "name": "Fern_Bracken_04",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.09885386647395955,
+      "root": [
+        -21.69795280700493,
+        0.6885191969748048,
+        -7.028764403457757
+      ]
+    },
+    {
+      "name": "Fern_Bracken_07",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.09468081596005185,
+      "root": [
+        27.06436824798584,
+        0.7034952110995032,
+        4.40064001083374
+      ]
+    },
+    {
+      "name": "Fern_Bracken_10",
+      "support": "Museum_Base_Lower",
+      "originalGap": 0.12312087667379668,
+      "root": [
+        -18.263737678527832,
+        0.12190039872731874,
+        -15.40217399597168
+      ]
+    },
+    {
+      "name": "Fern_Bracken_15",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.15250279324965166,
+      "root": [
+        -5.5602565604939675,
+        0.7034492245070032,
+        -26.554631812259686
+      ]
+    },
+    {
+      "name": "Fern_Bracken_16",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.047791239925249696,
+      "root": [
+        26.953083515167236,
+        0.7031478677312292,
+        -13.164635181427002
+      ]
+    },
+    {
+      "name": "Fern_Cluster_013",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.7154023944227994,
+      "root": [
+        -25.32052011259608,
+        0.6998260074457925,
+        -24.665455152919616
+      ]
+    },
+    {
+      "name": "Fern_Cluster_119",
+      "support": "Gazebo_Base_MossEmitter",
+      "originalGap": 0.26780497540453385,
+      "root": [
+        -4.104475000964026,
+        0.2786349720954895,
+        3.92498223341576
+      ]
+    },
+    {
+      "name": "Fern_Cluster_120",
+      "support": "Gazebo_Base_MossEmitter",
+      "originalGap": 0.2653828777022428,
+      "root": [
+        -3.9442820262619422,
+        0.2786349720954895,
+        -3.6142798541674566
+      ]
+    },
+    {
+      "name": "Fern_Cluster_121",
+      "support": "Gazebo_Base_MossEmitter",
+      "originalGap": 0.26465237952625875,
+      "root": [
+        4.853371722574014,
+        0.2786349720954895,
+        3.640071589109983
+      ]
+    },
+    {
+      "name": "Fern_Cluster_134",
+      "support": "Rock_Cluster_028",
+      "originalGap": 0.042618425175394714,
+      "root": [
+        13.409971316873735,
+        0.7432256062367093,
+        -12.147667350836416
+      ]
+    },
+    {
+      "name": "Fern_Dense_07",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.2174805755873812,
+      "root": [
+        -21.199372595270134,
+        0.6939656098713833,
+        -23.51619327068329
+      ]
+    },
+    {
+      "name": "Fern_Sparse_01",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.541481852386622,
+      "root": [
+        19.478654861450195,
+        0.7045351931112722,
+        -26.902563095092773
+      ]
+    },
+    {
+      "name": "Fern_Sparse_03",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.5549636844385561,
+      "root": [
+        25.414676666259766,
+        0.6983461681615415,
+        24.119173049926758
+      ]
+    },
+    {
+      "name": "Fern_Sparse_06",
+      "support": "Gazebo_Base_MossEmitter",
+      "originalGap": 0.28171662408105647,
+      "root": [
+        -4.0175292993924785,
+        0.2786349720954895,
+        -3.709617522690678
+      ]
+    },
+    {
+      "name": "Fern_Young_01",
+      "support": "Museum_Base_MossEmitter",
+      "originalGap": 0.1654532749011265,
+      "root": [
+        15.039440848610619,
+        0.6955021489308132,
+        -24.008482326160777
+      ]
+    },
+    {
+      "name": "Fern_Young_03",
+      "support": "Rock_07",
+      "originalGap": 0.14650727640712347,
+      "root": [
+        16.074167164711202,
+        0.12893330396091854,
+        11.638960664922541
+      ]
+    },
+    {
+      "name": "Fern_Young_04",
+      "support": "Gazebo_Base_MossEmitter",
+      "originalGap": 0.5726628303527832,
+      "root": [
+        -5.24972070293765,
+        0.2786349720954895,
+        -1.074855696071278
+      ]
+    }
+  ],
   "sourceParticleSlots": 3681,
   "visibleMossInstances": 2771,
   "maskedMossInstances": 714,

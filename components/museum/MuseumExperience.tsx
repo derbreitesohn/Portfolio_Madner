@@ -55,9 +55,9 @@ function MuseumMap({ position, yaw, visited }: { position: number[]; yaw: number
     <path d="M20 50H80M50 20V80" stroke="currentColor" opacity=".3" strokeWidth="2" />
     <circle cx="50" cy="50" r="8" fill="none" stroke="currentColor" opacity=".4" />
     {museumProjects.map((p, i) => <circle key={p.id} cx={i < 3 ? 8 : 92} cy={i % 3 === 0 ? 79 : i % 3 === 1 ? 50 : 22}
-      r="2.7" fill={visited.has(p.id) ? "#eacb87" : "currentColor"} opacity={visited.has(p.id) ? 1 : 0.5} />)}
+      r="2.7" fill="currentColor" opacity={visited.has(p.id) ? 1 : 0.5} />)}
     <g transform={`translate(${50 + position[0] * 1.46},${50 + position[2] * 1.46}) rotate(${-yaw * 180 / Math.PI})`}>
-      <path d="M0 -5L3.5 3L0 1.5L-3.5 3Z" fill="#f3db9e" />
+      <path d="M0 -5L3.5 3L0 1.5L-3.5 3Z" fill="currentColor" />
     </g>
   </svg>;
 }
@@ -123,7 +123,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
     <Viewport key={attempt} callbacks={callbacks} onEngine={onEngine} />
     <div className="museum-vignette" />
     <header className="museum-header">
-      <div className="museum-brand"><span className="museum-monogram">fm.</span><div>FLO MADNER<small>THE FLOODED MUSEUM</small></div></div>
+      <div className="museum-brand"><strong>MADNER<span>.</span></strong><small>THE FLOODED MUSEUM</small></div>
       <nav aria-label="Museum navigation">
         <button className="museum-nav-button" onClick={gallery}><Grid2X2 size={16} /><span>Gallery</span><small>{visited.size}/06</small></button>
         {active && <button className="museum-icon-button" onClick={() => engine.current?.pause()} aria-label="Pause exploration"><Pause size={18} /></button>}
@@ -136,7 +136,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
       <div className="museum-welcome-shade" />
       <div className="museum-introduction">
         <p className="museum-eyebrow">A SPACE FOR CURIOSITY</p>
-        <h1>The flooded<br /><em>museum.</em></h1>
+        <h1>Flooded<br />museum<span>.</span></h1>
         <p className="museum-description">Old stone. Still water. New ideas.<br />Step inside my world of code, games and design.</p>
         {error ? <p className="museum-load-error" role="alert">{error}</p> :
           <p className="museum-load-label" role="status">{ready ? "Six projects. Your own pace." : `Opening the museum · ${progress}%`}</p>}

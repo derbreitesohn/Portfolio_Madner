@@ -126,7 +126,7 @@ export async function prepareModel(root: THREE.Group, scene: THREE.Scene, isDisp
     }
   });
 
-  prepareGalleryFloor(root, scene);
+  prepareGalleryFloor(root);
 
   for (const project of museumProjects) {
     const display = root.getObjectByName(`Project_${project.number}_Display`);

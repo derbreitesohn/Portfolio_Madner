@@ -4,7 +4,7 @@ import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import validator from 'gltf-validator';
-import { BufferGeometry, Float32BufferAttribute, Matrix4, Mesh, Quaternion, Vector3 } from 'three';
+import { BufferGeometry, DoubleSide, Float32BufferAttribute, Matrix4, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Vector3 } from 'three';
 import { plaqueSurface } from '../lib/museum/plaque.ts';
 
 await mkdir('test-results', {recursive:true});
@@ -65,6 +65,26 @@ for (const node of instances) {
   }
 }
 assert.ok(!root.listNodes().some((n) => /Archive|Museum_Lantern|^Moss_Patch_Source$/.test(n.getName())), 'Archive or standalone particle source leaked into export');
+// Verify attachment against the independent collision export after compression.
+const collision = JSON.parse(await readFile('public/museum/collision.json', 'utf8'));
+const groundGeometry = new BufferGeometry().setAttribute('position', new Float32BufferAttribute(collision.triangles, 3));
+const ground = new Mesh(groundGeometry, new MeshBasicMaterial({ side: DoubleSide }));
+const ray = new Raycaster();
+assert.ok(manifest.groundedPlants.length >= 20, 'Floating-fern corrections are missing');
+for (const record of manifest.groundedPlants) {
+  const node = root.listNodes().find((n) => n.getName() === record.name);
+  const positions = node.getMesh().listPrimitives()[0].getAttribute('POSITION');
+  const min = positions.getMinNormalized([]), max = positions.getMaxNormalized([]);
+  const attachment = new Vector3().fromArray(node.getExtras().plantRootInBounds.map((v, axis) => min[axis] + v * (max[axis] - min[axis])))
+    .applyMatrix4(new Matrix4().fromArray(node.getWorldMatrix()));
+  assert.ok(attachment.distanceTo(new Vector3().fromArray(record.root)) < 0.002, `Plant attachment changed during compression: ${record.name}`);
+  ray.set(attachment.clone().add(new Vector3(0, 0.3, 0)), new Vector3(0, -1, 0));
+  const hit = ray.intersectObject(ground).find((hit) => hit.face.normal.y > 0.25);
+  assert.ok(hit && attachment.y - hit.point.y >= -0.04 && attachment.y - hit.point.y <= 0.005, `Fern does not meet its support: ${record.name}`);
+  assert.ok(attachment.y > 0.045, `Fern was lowered beneath the water: ${record.name}`);
+}
+groundGeometry.dispose(); ground.material.dispose();
+assert.deepEqual(root.listTextures().find((texture) => texture.getName() === 'Museum_Base_MossEmitter').getSize(), [2048, 2048], 'Floor bake detail was reduced');
 let nonfinite = 0;
 for (const accessor of root.listAccessors()) {
   const array = accessor.getArray();
@@ -81,7 +101,7 @@ for (const material of bakedMaterials) {
   if (material.getNormalTexture() && material.getBaseColorTexture()) assert.notEqual(material.getBaseColorTextureInfo().getTexCoord(), material.getNormalTextureInfo().getTexCoord(), 'Colour bake overwrote original normal UVs');
 }
 assert.ok(bytes.length < 20_000_000, 'Museum download exceeds budget');
-const report = { bytes: bytes.length, frames: 6, mossInstances: mossCount, bakedMaterials: bakedMaterials.length,
+const report = { bytes: bytes.length, frames: 6, mossInstances: mossCount, groundedPlants: manifest.groundedPlants.length, bakedMaterials: bakedMaterials.length,
   meshes: root.listMeshes().length, textures: root.listTextures().length,
   validatorErrors: result.issues.numErrors, validatorWarnings: result.issues.numWarnings,
   validatorLimitations: ['EXT_meshopt_compression and EXT_mesh_gpu_instancing are not checked by this validator; decoded data and instance counts are checked separately.'] };

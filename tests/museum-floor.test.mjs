@@ -6,48 +6,35 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import * as THREE from 'three';
 import { prepareGalleryFloor } from '../lib/museum/floor.ts';
 
-function worldCoordinates(mesh) {
-  const position = mesh.geometry.getAttribute('position'), index = mesh.geometry.index;
-  return Array.from({ length: index?.count ?? position.count }, (_, i) =>
-    new THREE.Vector3().fromBufferAttribute(position, index ? index.getX(i) : i)
-      .applyMatrix4(mesh.matrixWorld).toArray()).flat();
-}
-
-test('gallery material replacement preserves the exported floor and its particle parent', async () => {
+test('floor polish preserves authored texture atlases, normal UVs and geometry on both levels', async () => {
   const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({ 'meshopt.decoder': MeshoptDecoder });
   const document = await io.read('public/museum/museum.glb');
-  const node = document.getRoot().listNodes().find((node) => node.getName() === 'Museum_Base_MossEmitter');
-  const surfaceNode = node.listChildren().find((child) => child.getMesh()?.listPrimitives()
-    .some((primitive) => primitive.getMaterial()?.getName().includes('MAT_Base_WeatheredStone')));
-  const primitive = surfaceNode.getMesh().listPrimitives()[0], accessor = primitive.getAttribute('POSITION');
-  const vertices = Array.from({ length: accessor.getCount() }, (_, i) => accessor.getElement(i, [])).flat();
-  const geometry = new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-  geometry.setIndex(Array.from(primitive.getIndices().getArray()));
-  const material = new THREE.MeshStandardMaterial({ name: primitive.getMaterial().getName() });
-  const base = new THREE.Mesh(geometry, material);
-  base.applyMatrix4(new THREE.Matrix4().fromArray(surfaceNode.getMatrix()));
-  // Match GLTFLoader's Group for nodes with both a mesh and particle children.
-  const emitter = new THREE.Group();
-  emitter.name = node.getName();
-  emitter.applyMatrix4(new THREE.Matrix4().fromArray(node.getWorldMatrix()));
-  const particles = new THREE.InstancedMesh(new THREE.PlaneGeometry(), new THREE.MeshBasicMaterial(), 1);
-  emitter.add(base, particles);
-  const root = new THREE.Group(), scene = new THREE.Scene();
-  root.add(emitter); scene.add(root); scene.updateMatrixWorld(true);
-  const before = worldCoordinates(base).sort((a, b) => a - b);
-  const particleMatrix = particles.matrixWorld.clone();
-  prepareGalleryFloor(root, scene);
-  scene.updateMatrixWorld(true);
-  const floor = scene.getObjectByName('Museum_Gallery_Floor');
-  assert.ok(floor instanceof THREE.Mesh, 'No detailed walking surface was created');
-  assert.ok(floor.geometry.getAttribute('position').count > 100);
-  const after = [...worldCoordinates(base), ...worldCoordinates(floor)].sort((a, b) => a - b);
-  assert.equal(after.length, before.length, 'Floor faces were lost or duplicated');
-  for (let i = 0; i < before.length; i++) assert.ok(Math.abs(before[i] - after[i]) < 0.00001, 'Walking surface moved');
-  assert.equal(particles.parent, emitter);
-  assert.ok(particles.matrixWorld.equals(particleMatrix), 'Floor replacement moved its vegetation');
-  const normals = floor.geometry.getAttribute('normal');
-  for (let i = 0; i < normals.count; i++) assert.ok(normals.getY(i) > 0.98, 'A wall/underside received the walking material');
-  const uv = floor.geometry.getAttribute('uv');
-  assert.ok(Math.max(...uv.array) - Math.min(...uv.array) > 10, 'Stone detail is stretched across the entire building');
+  const root = new THREE.Group(), originals = [];
+  for (const node of document.getRoot().listNodes()) for (const primitive of node.getMesh()?.listPrimitives() ?? []) {
+    const source = primitive.getMaterial();
+    if (!source.getName().startsWith('MAT_Base_WeatheredStone')) continue;
+    const geometry = new THREE.BufferGeometry(), positions = primitive.getAttribute('POSITION');
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(Array.from(positions.getArray()), 3));
+    geometry.setIndex(Array.from(primitive.getIndices().getArray()));
+    const map = new THREE.Texture(), normalMap = new THREE.Texture();
+    map.channel = source.getBaseColorTextureInfo().getTexCoord();
+    normalMap.channel = source.getNormalTextureInfo().getTexCoord();
+    const material = new THREE.MeshStandardMaterial({ name: source.getName(), map, normalMap });
+    const mesh = new THREE.Mesh(geometry, material), group = new THREE.Group();
+    group.add(mesh); root.add(group);
+    mesh.applyMatrix4(new THREE.Matrix4().fromArray(node.getWorldMatrix()));
+    originals.push({ mesh, geometry, map, normalMap, matrix: mesh.matrix.clone(), colourUV: map.channel, normalUV: normalMap.channel });
+  }
+  assert.equal(originals.length, 2, 'The gallery and waterside step must both use the weathered material');
+  prepareGalleryFloor(root);
+  assert.equal(root.children.length, 2, 'A replacement floor was added');
+  for (const { mesh, geometry, map, normalMap, matrix, colourUV, normalUV } of originals) {
+    assert.equal(mesh.geometry, geometry, 'Floor geometry or UVs were replaced');
+    assert.ok(mesh.matrix.equals(matrix), 'Floor moved relative to collision');
+    assert.equal(mesh.material.map, map, 'Authored dirt/stone colour was replaced');
+    assert.equal(mesh.material.normalMap, normalMap, 'Authored normal texture was replaced');
+    assert.equal(map.channel, colourUV); assert.equal(normalMap.channel, normalUV);
+    assert.notEqual(colourUV, normalUV, 'Bake atlas and original normal UVs were conflated');
+    assert.ok(mesh.material.normalScale.x < 0.2 && mesh.material.roughness > 0.85);
+  }
 });

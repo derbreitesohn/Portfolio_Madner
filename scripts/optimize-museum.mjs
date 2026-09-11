@@ -7,6 +7,7 @@ import sharp from 'sharp';
 import { copyFile, mkdir, readFile, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { Matrix4, Quaternion, Vector3 } from 'three';
+import { groundMuseumPlants } from './ground-museum-plants.mjs';
 
 const source = path.resolve(process.argv[2] || '../museum-preparation/web/polished-export');
 const target = path.resolve('public/museum');
@@ -14,6 +15,9 @@ await mkdir(target, { recursive: true });
 await Promise.all([MeshoptEncoder.ready, MikkTSpace.ready]);
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.encoder': MeshoptEncoder});
 const document = await io.read(path.join(source, 'museum.raw.glb'));
+const groundedPlants = groundMuseumPlants(document);
+const floorImages = document.getRoot().listTextures().filter((texture) => /^Museum_Base_/.test(texture.getName()))
+  .map((texture) => ({ texture, image: texture.getImage(), mime: texture.getMimeType() }));
 // The particle template is needed during Blender export, but is not a placed
 // exhibit plant. Remove only its standalone node; instances keep its shared mesh.
 for (const node of document.getRoot().listNodes()) {
@@ -95,6 +99,13 @@ await document.transform(textureCompress({
   encoder: sharp, targetFormat: 'webp', resize: [1024, 1024], lossless: true,
   slots: /^normalTexture$/,
 }));
+// Keep the full baked floor detail instead of reducing its 2048 atlas to 1024.
+// Restore original pixels first; never enlarge the already-compressed image.
+for (const { texture, image, mime } of floorImages) texture.setImage(image).setMimeType(mime);
+await document.transform(textureCompress({
+  encoder: sharp, targetFormat: 'webp', resize: [2048, 2048], quality: 92,
+  pattern: /^Museum_Base_/, slots: /^baseColorTexture$/,
+}));
 await document.transform(meshopt({encoder: MeshoptEncoder, level: 'medium', quantizePosition: 16, quantizeTexcoord: 16}));
 await io.write(path.join(target, 'museum.glb'), document);
 await copyFile(path.join(source, 'collision.json'), path.join(target, 'collision.json'));
@@ -102,6 +113,8 @@ const report = JSON.parse(await readFile(path.join(source, 'export-report.json')
 report.rawBytes = (await stat(path.join(source, 'museum.raw.glb'))).size;
 report.webBytes = (await stat(path.join(target, 'museum.glb'))).size;
 report.textureLimit = 1024;
+report.floorTextureLimit = 2048;
+report.groundedPlants = groundedPlants;
 report.sourceParticleSlots = sourceParticleSlots;
 report.visibleMossInstances = visibleMossInstances;
 report.maskedMossInstances = maskedMossInstances;
