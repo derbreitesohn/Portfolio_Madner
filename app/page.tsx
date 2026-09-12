@@ -9,44 +9,33 @@ import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
+import "./portfolio.css";
 const MuseumExperience = dynamic(() => import("@/components/museum/MuseumExperience"), { ssr: false });
 
 export default function Home() {
   const [is3DMode, setIs3DMode] = useState(false);
 
   return (
-    <main className="bg-[#050505] text-white min-h-screen w-full font-sans selection:bg-white selection:text-black flex flex-col items-center">
+    <main className="portfolio">
       <AnimatePresence mode="wait">
         {is3DMode ? (
           <MuseumExperience key="three" onBack={() => setIs3DMode(false)} />
         ) : (
           <motion.div
             key="standard"
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="w-full flex flex-col items-center"
+            className="portfolio-page"
           >
+            <a className="portfolio-skip-link" href="#projects">Skip to projects</a>
             <Navbar />
             <Hero onEnter3D={() => setIs3DMode(true)} />
-            
-            {/* 
-                MANUAL SPACER STRATEGY
-                We use empty divs with fixed height to FORCE the gap.
-            */}
-            <div className="w-full max-w-6xl px-6 flex flex-col items-center">
-              
+            <div className="portfolio-width">
               <About />
-              <div className="h-[200px] w-full" /> {/* Spacer */}
-
               <Projects />
-              <div className="h-[200px] w-full" /> {/* Spacer */}
-
               <Experience />
-              <div className="h-[100px] w-full" /> {/* Smaller gap before footer */}
-
             </div>
-
             <Footer />
           </motion.div>
         )}

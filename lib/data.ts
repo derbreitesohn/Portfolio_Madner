@@ -17,21 +17,21 @@ export const cvData = {
     {
       role: "AI Automation Specialist",
       company: "GVS Austria e.U.",
-      period: "06/2026 – Present",
-      description: "Optimization and automation of internal and external processes.",
+      period: "Jun – Aug 2026",
+      description: "Worked on optimizing and automating internal and external processes in a full-time role.",
     },
     {
       role: "Student Assistant",
       company: "USTP – University of Applied Sciences St. Pölten",
-      period: "02/2026 – 05/2026",
-      description: "Part-time employment.",
+      period: "Feb – May 2026",
+      description: "Part-time student assistant alongside my Creative Computing studies.",
     },
   ],
   education: [
     {
-      degree: "Computer Science - Creative Computing",
+      degree: "Computer Science · Creative Computing",
       school: "University of Applied Sciences St. Pölten",
-      period: "09/2024 – Present",
+      period: "Sep 2024 – Present",
     },
   ],
   skills: {
@@ -74,13 +74,29 @@ export const cvData = {
   interests: ["Programming", "UI/UX", "Producing Music", "Sports", "Crocheting"],
 };
 
+export const cvDocument = {
+  href: "/cv/flo-madner-cv-de.pdf",
+  filename: "Flo-Madner-CV-DE.pdf",
+  details: "German · PDF · 3 pages",
+  updated: "18 August 2026",
+};
+
+export const skillGroups = [
+  { title: "Web & interfaces", tools: "React, TypeScript, JavaScript, Node.js, SQL, UI/UX" },
+  { title: "Games & 3D", tools: "Unity, C#, Blender, Three.js, Wwise" },
+  { title: "Automation & data", tools: "Python, RAG, API integrations" },
+];
+
 export const projectsData = [
   {
     slug: "pat-pat",
     title: "Pat Pat",
+    displayTitle: "Pat Pat",
+    category: "Full-stack web application",
+    linkLabel: "Visit website",
     period: "02/2025 – Present",
     description:
-      "Development of several full-stack web applications, e.g., Pat Pat: A platform for pet owners to connect and organize meetups.",
+      "A platform for pet owners to connect and arrange meetups. Built with a React frontend, a Node.js backend and a SQL database.",
     technologies: ["React", "Node.js", "Express", "SQL", "TypeScript"],
     link: "https://patpat-three.vercel.app",
     image: "/projects/patpat.png",
@@ -88,9 +104,12 @@ export const projectsData = [
   {
     slug: "meniscus",
     title: "Meniscus",
+    displayTitle: "Meniscus",
+    category: "Game development",
+    linkLabel: "View source",
     period: "06/2026 – 07/2026",
     description:
-      "Unity Game with Wwise integration and custom Blender models/animations. Project created during the 4th Creative Code Lab.",
+      "A Unity game created during the fourth Creative Code Lab, bringing together custom Blender models and animations with Wwise audio integration.",
     technologies: ["Unity", "C#", "Blender", "Wwise"],
     link: "https://github.com/derbreitesohn/Meniscus",
     image: "/projects/meniscus.png",
@@ -98,9 +117,12 @@ export const projectsData = [
   {
     slug: "liji",
     title: "Liji: Virtual Closet Tracker",
+    displayTitle: "Liji",
+    category: "Android application",
+    linkLabel: "View source",
     period: "01/2026 – 02/2026",
     description:
-      "Native Kotlin App to optimize wardrobe usage through real-time 'Cost Per Wear' calculation and sustainability scores. Implemented a local SQLite database for offline-first functionality and management of complex relationships between items and outfits.",
+      "A native Android wardrobe tracker with cost-per-wear calculations and sustainability scores. A local SQLite database keeps items and outfits available offline.",
     technologies: ["Kotlin", "Android Studio", "SQLite", "Figma", "Jetpack Compose"],
     link: "https://github.com/derbreitesohn/Liji",
     image: "/projects/liji.png",
@@ -108,8 +130,11 @@ export const projectsData = [
   {
     slug: "ccl1-pawsup",
     title: "CCL1-PawsUp",
+    displayTitle: "PawsUp",
+    category: "Browser game",
+    linkLabel: "Play in browser",
     period: "01/2025 – 04/2026",
-    description: "Creative Code Lab 1 Project.",
+    description: "A JavaScript browser game created for my first Creative Code Lab. One of my earliest projects exploring interactive game development for the web.",
     technologies: ["JavaScript"],
     link: "https://derbreitesohn.github.io/CCL1-PawsUp/",
     image: "/projects/pawsup.png",
@@ -118,16 +143,23 @@ export const projectsData = [
   {
     slug: "portfolio",
     title: "Portfolio_Madner",
-    period: "05/2026 - Present",
-    description: "My interactive 3D portfolio.",
-    technologies: ["TypeScript", "Next.js", "React", "Three.js"],
+    displayTitle: "The Flooded Museum",
+    category: "Interactive 3D portfolio",
+    linkLabel: "View source & process",
+    period: "04/2026 – Present",
+    description: "My portfolio as a place to explore. Modelled and textured in Blender, then brought into the browser with Three.js: walk through the overgrown museum and open the projects inside its frames.",
+    technologies: ["Blender", "Three.js", "Next.js", "TypeScript"],
     link: "https://github.com/derbreitesohn/Portfolio_Madner",
+    image: "/museum/preview.webp",
   },
   {
     slug: "steelfang",
     title: "SteelFang",
+    displayTitle: "SteelFang",
+    category: "Game development",
+    linkLabel: "View source",
     period: "05/2026",
-    description: "My first Unity 2d Platformer.",
+    description: "My first 2D platformer in Unity. A starting point for learning game development with C# before moving into larger game and 3D projects.",
     technologies: ["C#", "Unity"],
     link: "https://github.com/derbreitesohn/SteelFang",
     image: "/projects/steelfang.png",

@@ -10,18 +10,15 @@
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   background: var(--bg-dark);
   color: #fff;
-  overflow-x: hidden;
-  cursor: crosshair;
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
@@ -96,5 +93,9 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--neon-cyan);
+  background: #737373;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html, body { scroll-behavior: auto; }
 }

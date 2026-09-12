@@ -1,35 +1,23 @@
-"use client";
-
-import { motion } from "framer-motion";
-
-const LINKS = [
-  { name: "About", href: "#about" },
-  { name: "Work", href: "#projects" },
-  { name: "Experience", href: "#experience" },
-];
+import { ArrowUpRight } from "lucide-react";
+import { cvDocument } from "@/lib/data";
 
 export default function Navbar() {
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-6 backdrop-blur-md bg-black/10 border-b border-white/5"
-    >
-      <div className="text-xl font-black tracking-tighter">
-        MADNER<span className="text-gray-500">.</span>
-      </div>
-      
-      <div className="flex gap-8">
-        {LINKS.map((link) => (
-          <a
-            key={link.name}
-            href={link.href}
-            className="text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-white transition-colors"
-          >
-            {link.name}
+    <header className="portfolio-header">
+      <nav className="portfolio-nav portfolio-width" aria-label="Main navigation">
+        <a href="#top" className="portfolio-wordmark" aria-label="Flo Madner, back to top">
+          MADNER<span>.</span>
+        </a>
+        <div className="portfolio-nav-links">
+          <a href="#about">About</a>
+          <a href="#projects">Work</a>
+          <a href="#experience" className="portfolio-nav-extra">Background</a>
+          <a href="#contact" className="portfolio-nav-extra">Contact</a>
+          <a href={cvDocument.href} target="_blank" rel="noopener noreferrer" className="portfolio-nav-cv" aria-label="View CV (German PDF, opens in a new tab)">
+            CV <ArrowUpRight size={14} aria-hidden="true" />
           </a>
-        ))}
-      </div>
-    </motion.nav>
+        </div>
+      </nav>
+    </header>
   );
 }
