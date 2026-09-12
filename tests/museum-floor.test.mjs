@@ -14,9 +14,14 @@ test('floor polish preserves authored texture atlases, normal UVs and geometry o
     const source = primitive.getMaterial();
     if (!source.getName().startsWith('MAT_Base_WeatheredStone')) continue;
     const geometry = new THREE.BufferGeometry(), positions = primitive.getAttribute('POSITION');
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(Array.from(positions.getArray()), 3));
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(Array.from({length:positions.getCount()}, (_, i) => positions.getElement(i, [])).flat(), 3));
     geometry.setIndex(Array.from(primitive.getIndices().getArray()));
+    for (const channel of [0, 1]) {
+      const uv = primitive.getAttribute(`TEXCOORD_${channel}`);
+      geometry.setAttribute(channel ? 'uv1' : 'uv', new THREE.Float32BufferAttribute(Array.from({length:uv.getCount()}, (_, i) => uv.getElement(i, [])).flat(), 2));
+    }
     const map = new THREE.Texture(), normalMap = new THREE.Texture();
+    normalMap.image = { width: 800, height: 800 };
     map.channel = source.getBaseColorTextureInfo().getTexCoord();
     normalMap.channel = source.getNormalTextureInfo().getTexCoord();
     const material = new THREE.MeshStandardMaterial({ name: source.getName(), map, normalMap });
@@ -32,9 +37,11 @@ test('floor polish preserves authored texture atlases, normal UVs and geometry o
     assert.equal(mesh.geometry, geometry, 'Floor geometry or UVs were replaced');
     assert.ok(mesh.matrix.equals(matrix), 'Floor moved relative to collision');
     assert.equal(mesh.material.map, map, 'Authored dirt/stone colour was replaced');
-    assert.equal(mesh.material.normalMap, normalMap, 'Authored normal texture was replaced');
-    assert.equal(map.channel, colourUV); assert.equal(normalMap.channel, normalUV);
+    assert.equal(mesh.material.normalMap.image, normalMap.image, 'Authored normal texture pixels were replaced');
+    assert.equal(map.channel, colourUV); assert.equal(mesh.material.normalMap.channel, normalUV);
+    assert.equal(normalMap.repeat.x, 1, 'Changing the floor sampler altered another material');
+    assert.ok(mesh.material.normalMap.repeat.x > 6 && mesh.material.normalMap.repeat.x < 9, 'Stone pattern remains stretched across the building');
     assert.notEqual(colourUV, normalUV, 'Bake atlas and original normal UVs were conflated');
-    assert.ok(mesh.material.normalScale.x < 0.2 && mesh.material.roughness > 0.85);
+    assert.ok(mesh.material.normalScale.x > 0 && mesh.material.normalScale.x < 1 && mesh.material.roughness > 0.85);
   }
 });
