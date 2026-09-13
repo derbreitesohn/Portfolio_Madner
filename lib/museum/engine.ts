@@ -6,6 +6,11 @@ import { collisionWorld, MuseumPlayer, SPAWN } from "./physics";
 import { prepareModel, type Exhibit } from "./model";
 import type { Water } from "three/addons/objects/Water.js";
 
+const LOOK_SPEED = 0.0022;
+// Seconds to cover ~63% of the remaining angle. Low enough to stay responsive,
+// high enough to smooth jittery trackpad and touch deltas.
+const LOOK_SMOOTHING = 0.045;
+
 export type MuseumCallbacks = {
   progress: (percent: number) => void;
   ready: () => void;
@@ -55,6 +60,8 @@ export class MuseumEngine {
   private pickables: THREE.Object3D[] = [];
   private yaw = 0;
   private pitch = -0.07;
+  private targetYaw = 0;
+  private targetPitch = -0.07;
   private elapsed = 0;
   private lastStatus = 0;
   private lastRay = 0;
@@ -212,8 +219,8 @@ export class MuseumEngine {
   reset = () => {
     this.pause();
     this.player?.teleport(...SPAWN);
-    this.yaw = 0;
-    this.pitch = -0.07;
+    this.yaw = this.targetYaw = 0;
+    this.pitch = this.targetPitch = -0.07;
     this.camera.position.set(...SPAWN);
     this.updateRotation();
     this.reportPosition();
@@ -226,8 +233,8 @@ export class MuseumEngine {
     this.player.teleport(exhibit.visit.x, exhibit.visit.y, exhibit.visit.z);
     this.camera.position.copy(exhibit.visit);
     this.camera.lookAt(exhibit.position);
-    this.yaw = this.camera.rotation.y;
-    this.pitch = this.camera.rotation.x;
+    this.yaw = this.targetYaw = this.camera.rotation.y;
+    this.pitch = this.targetPitch = this.camera.rotation.x;
     this.reportPosition();
   };
 
@@ -270,6 +277,12 @@ export class MuseumEngine {
     const dt = Math.min(this.clock.getDelta(), 0.05);
     this.elapsed += dt;
     if (document.hidden || !this.loaded) return;
+    // Ease the camera toward the pointer target instead of snapping to each event.
+    // Frame-rate independent, so a phone at 30fps turns at the same speed as 120fps.
+    const ease = 1 - Math.exp(-dt / LOOK_SMOOTHING);
+    this.yaw += (this.targetYaw - this.yaw) * ease;
+    this.pitch += (this.targetPitch - this.pitch) * ease;
+    this.updateRotation();
     if (this.loaded && this.active && this.player) {
       const strafe = Number(this.keys.has("KeyD") || this.keys.has("ArrowRight")) - Number(this.keys.has("KeyA") || this.keys.has("ArrowLeft")) + this.stick.x;
       const forward = Number(this.keys.has("KeyW") || this.keys.has("ArrowUp")) - Number(this.keys.has("KeyS") || this.keys.has("ArrowDown")) - this.stick.y;
@@ -317,10 +330,9 @@ export class MuseumEngine {
     if (!locked && this.dragging?.id !== event.pointerId) return;
     const dx = locked ? event.movementX : event.clientX - this.dragging!.x;
     const dy = locked ? event.movementY : event.clientY - this.dragging!.y;
-    this.yaw -= dx * 0.0022;
-    this.pitch = Math.max(-1.35, Math.min(1.35, this.pitch - dy * 0.0022));
+    this.targetYaw -= dx * LOOK_SPEED;
+    this.targetPitch = Math.max(-1.35, Math.min(1.35, this.targetPitch - dy * LOOK_SPEED));
     if (this.dragging) { this.dragging.x = event.clientX; this.dragging.y = event.clientY; }
-    this.updateRotation();
   };
   private pointerUp = (event: PointerEvent) => {
     if (this.dragging?.id !== event.pointerId) return;

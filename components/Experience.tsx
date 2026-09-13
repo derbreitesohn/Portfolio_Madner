@@ -1,26 +1,19 @@
-import { ArrowDownToLine, ArrowUpRight, FileText } from "lucide-react";
 import { cvData, cvDocument } from "@/lib/data";
 
 export default function Experience() {
   return (
     <section id="experience" className="portfolio-section portfolio-background" aria-labelledby="background-title">
       <div>
-        <p className="portfolio-eyebrow">03 / Background</p>
-        <h2 id="background-title">Learning.<br />Building.<br />Moving forward.</h2>
+        <h2 id="background-title">Background<span>.</span></h2>
         <p className="portfolio-body-copy">Studying Creative Computing, with practical experience in process automation and university work.</p>
         <aside className="portfolio-cv" aria-labelledby="cv-title">
-          <FileText size={25} strokeWidth={1.5} aria-hidden="true" />
-          <h3 id="cv-title">My CV, in one place.</h3>
-          <p>Experience, education and skills.<br />{cvDocument.details}</p>
+          <h3 id="cv-title">CV<span>.</span></h3>
+          <p>{cvDocument.details}</p>
           <div className="portfolio-cv-actions">
-            <a href={cvDocument.href} target="_blank" rel="noopener noreferrer" className="portfolio-text-link" aria-label="View CV (German PDF, opens in a new tab)">
-              View CV <ArrowUpRight size={15} aria-hidden="true" />
-            </a>
-            <a href={cvDocument.href} download={cvDocument.filename} className="portfolio-text-link">
-              Download CV <ArrowDownToLine size={15} aria-hidden="true" />
+            <a href={cvDocument.href} download={cvDocument.filename} className="portfolio-button portfolio-button-secondary">
+              Download CV
             </a>
           </div>
-          <span className="portfolio-cv-date">Updated {cvDocument.updated}</span>
         </aside>
       </div>
       <div className="portfolio-timeline">
