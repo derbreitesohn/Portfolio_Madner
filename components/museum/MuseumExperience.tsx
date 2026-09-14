@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ArrowLeft, ArrowRight, ExternalLink, Grid2X2, Pause, RotateCcw, X } from "lucide-react";
+import { primaryLink } from "@/lib/data";
 import { museumProjects, type MuseumProject } from "@/lib/museum/projects";
 import type { MuseumEngine, MuseumCallbacks } from "@/lib/museum/engine";
 import { SPAWN } from "@/lib/museum/physics";
@@ -194,7 +195,8 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
       <p className="museum-eyebrow">EXHIBIT {panel.number} · {panel.period}</p>
       <h2>{panel.title}</h2><p className="museum-project-description">{panel.description}</p>
       <ul className="museum-tags">{panel.technologies.map((tech) => <li key={tech}>{tech}</li>)}</ul>
-      <div className="museum-detail-actions"><a className="museum-primary" href={panel.link} target="_blank" rel="noopener noreferrer">Explore project <ExternalLink size={16} /></a>
+      <div className="museum-detail-actions"><a className="museum-primary" href={primaryLink(panel).href} target="_blank" rel="noopener noreferrer">{primaryLink(panel).label} <ExternalLink size={16} /></a>
+        {panel.demo && <a className="museum-secondary" href={panel.source.href} target="_blank" rel="noopener noreferrer">{panel.source.label} <ExternalLink size={14} /></a>}
         {ready && !error && <button className="museum-text-button" onClick={() => visit(panel)}>Visit its frame <ArrowRight size={16} /></button>}
       </div>
     </MuseumDialog>}

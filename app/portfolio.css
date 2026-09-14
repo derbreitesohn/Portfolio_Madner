@@ -63,6 +63,11 @@
 .portfolio-tags li { border: 1px solid #ffffff24; padding: 6px 8px; color: #b2b2ad; font-size: 9px; line-height: 1.2; letter-spacing: .04em; }
 .portfolio-text-link { display: inline-flex; align-items: center; gap: 10px; min-height: 36px; color: #e5e5df; font-size: 11px; font-weight: 700; text-decoration: underline !important; text-underline-offset: 6px; text-decoration-color: #ffffff40 !important; transition: text-decoration-color .2s; }
 .portfolio-text-link:hover { text-decoration-color: #fff !important; }
+/* Live build first, source second. When a project has no live build the source
+   link is the only one here, so it keeps the brighter treatment. */
+.portfolio-project-links { display: flex; flex-wrap: wrap; align-items: center; column-gap: 24px; }
+.portfolio-project-links .portfolio-text-link + .portfolio-text-link { color: #a3a39d; font-weight: 500; }
+.portfolio-project-links .portfolio-text-link + .portfolio-text-link:hover { color: #e5e5df; }
 
 .portfolio-background { border-bottom: 0; }
 .portfolio-cv { max-width: 370px; }

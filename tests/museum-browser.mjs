@@ -16,14 +16,26 @@ const observe = (page) => {
 const position = async (page) => (await page.locator('.museum').getAttribute('data-position')).split(',').map(Number);
 const waitReady = (page) => page.waitForFunction(() => document.querySelector('.museum')?.dataset.ready === 'true', null, { timeout: 90000 });
 const waitActive = (page) => page.waitForFunction(() => document.querySelector('.museum')?.dataset.active === 'true');
+// [title, primary action label, primary href, source href]. The primary is the
+// live build where one exists, otherwise the repository; the source link only
+// renders as a separate button when those two differ.
 const expected = [
-  ['Pat Pat', 'https://patpat-three.vercel.app'],
-  ['Meniscus', 'https://github.com/derbreitesohn/Meniscus'],
-  ['Liji: Virtual Closet Tracker', 'https://github.com/derbreitesohn/Liji'],
-  ['CCL1-PawsUp', 'https://derbreitesohn.github.io/CCL1-PawsUp/'],
-  ['Portfolio_Madner', 'https://github.com/derbreitesohn/Portfolio_Madner'],
-  ['SteelFang', 'https://github.com/derbreitesohn/SteelFang'],
+  ['Pat Pat', 'Visit website', 'https://patpat-three.vercel.app', 'https://github.com/derbreitesohn/ss2025_ccl_'],
+  ['Meniscus', 'View source', 'https://github.com/derbreitesohn/Meniscus', 'https://github.com/derbreitesohn/Meniscus'],
+  ['Liji: Virtual Closet Tracker', 'View source', 'https://github.com/derbreitesohn/Liji', 'https://github.com/derbreitesohn/Liji'],
+  ['CCL1-PawsUp', 'Play in browser', 'https://derbreitesohn.github.io/CCL1-PawsUp/', 'https://github.com/derbreitesohn/CCL1-PawsUp'],
+  ['Portfolio_Madner', 'Open live site', 'https://portfolio-madner.vercel.app', 'https://github.com/derbreitesohn/Portfolio_Madner'],
+  ['SteelFang', 'View source', 'https://github.com/derbreitesohn/SteelFang', 'https://github.com/derbreitesohn/SteelFang'],
 ];
+
+// Assert the detail panel offers the right way in: the primary action, plus a
+// separate source link whenever the project also has a live build.
+async function assertProjectLinks(page, [, label, primary, source]) {
+  assert.equal(await page.getByRole('link',{name:label,exact:true}).getAttribute('href'), primary);
+  const sourceLinks = page.getByRole('link',{name:'View source',exact:true});
+  if (primary === source) assert.equal(await sourceLinks.count(), label === 'View source' ? 1 : 0);
+  else assert.equal(await sourceLinks.getAttribute('href'), source);
+}
 try {
   const desktop = await browser.newPage({ viewport: {width:1440,height:960} });
   observe(desktop);
@@ -67,7 +79,7 @@ try {
     if (i % 2 === 0) await desktop.keyboard.press('KeyE');
     else await desktop.mouse.click(720, 480);
     await desktop.getByRole('dialog', {name:expected[i][0], exact:true}).waitFor();
-    assert.equal(await desktop.getByRole('link',{name:'Explore project',exact:true}).getAttribute('href'), expected[i][1]);
+    await assertProjectLinks(desktop, expected[i]);
     const focusTrapped = await desktop.evaluate(() => document.querySelector('dialog')?.contains(document.activeElement));
     assert.ok(focusTrapped, 'Project dialog did not receive focus');
     if (i === 0) await desktop.screenshot({path:`${out}/museum-project.png`});
@@ -138,7 +150,7 @@ try {
   await fallback.getByRole('alert').waitFor();
   await fallback.getByRole('button',{name:'Browse the projects',exact:true}).click();
   await fallback.getByRole('button',{name:'Read about Pat Pat',exact:true}).click();
-  assert.equal(await fallback.getByRole('link',{name:'Explore project',exact:true}).getAttribute('href'), expected[0][1]);
+  await assertProjectLinks(fallback, expected[0]);
   await fallback.getByRole('button',{name:'Close dialog',exact:true}).click();
   await fallback.unroute('**/museum/museum.glb');
   await fallback.getByRole('button',{name:'Try again',exact:true}).click();

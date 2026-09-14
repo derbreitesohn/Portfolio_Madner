@@ -87,18 +87,43 @@ export const skillGroups = [
   { title: "Automation & data", tools: "Python, RAG, API integrations" },
 ];
 
-export const projectsData = [
+
+export type ProjectLink = { href: string; label: string };
+
+export type Project = {
+  slug: string;
+  title: string;
+  displayTitle: string;
+  category: string;
+  period: string;
+  description: string;
+  technologies: string[];
+  image: string;
+  /** The GitHub repository. Every project has one. */
+  source: ProjectLink;
+  /** A hosted build you can actually open. null when there is nothing live to visit. */
+  demo: ProjectLink | null;
+};
+
+// Live builds checked 14 September 2026. Re-check before publishing: a `demo`
+// that 404s is worse than no demo at all.
+//   liji-delta.vercel.app  404 — the repo has a Pages workflow but Pages is off.
+//   steel-fang.vercel.app  404 — Unity project, no web build committed.
+//   meniscus.vercel.app    200 but it is somebody else's component library,
+//                          not the Unity game. Do not link it, whatever the
+//                          repo's `homepage` field says.
+export const projectsData: Project[] = [
   {
     slug: "pat-pat",
     title: "Pat Pat",
     displayTitle: "Pat Pat",
     category: "Full-stack web application",
-    linkLabel: "Visit website",
     period: "02/2025 – Present",
     description:
       "A platform for pet owners to connect and arrange meetups. Built with a React frontend, a Node.js backend and a SQL database.",
     technologies: ["React", "Node.js", "Express", "SQL", "TypeScript"],
-    link: "https://patpat-three.vercel.app",
+    source: { href: "https://github.com/derbreitesohn/ss2025_ccl_", label: "View source" },
+    demo: { href: "https://patpat-three.vercel.app", label: "Visit website" },
     image: "/projects/patpat.png",
   },
   {
@@ -106,12 +131,12 @@ export const projectsData = [
     title: "Meniscus",
     displayTitle: "Meniscus",
     category: "Game development",
-    linkLabel: "View source",
     period: "06/2026 – 07/2026",
     description:
       "A Unity game created during the fourth Creative Code Lab, bringing together custom Blender models and animations with Wwise audio integration.",
     technologies: ["Unity", "C#", "Blender", "Wwise"],
-    link: "https://github.com/derbreitesohn/Meniscus",
+    source: { href: "https://github.com/derbreitesohn/Meniscus", label: "View source" },
+    demo: null,
     image: "/projects/meniscus.png",
   },
   {
@@ -119,12 +144,12 @@ export const projectsData = [
     title: "Liji: Virtual Closet Tracker",
     displayTitle: "Liji",
     category: "Android application",
-    linkLabel: "View source",
     period: "01/2026 – 02/2026",
     description:
       "A native Android wardrobe tracker with cost-per-wear calculations and sustainability scores. A local SQLite database keeps items and outfits available offline.",
     technologies: ["Kotlin", "Android Studio", "SQLite", "Figma", "Jetpack Compose"],
-    link: "https://github.com/derbreitesohn/Liji",
+    source: { href: "https://github.com/derbreitesohn/Liji", label: "View source" },
+    demo: null,
     image: "/projects/liji.png",
   },
   {
@@ -132,24 +157,23 @@ export const projectsData = [
     title: "CCL1-PawsUp",
     displayTitle: "PawsUp",
     category: "Browser game",
-    linkLabel: "Play in browser",
     period: "01/2025 – 04/2026",
     description: "A JavaScript browser game created for my first Creative Code Lab. One of my earliest projects exploring interactive game development for the web.",
     technologies: ["JavaScript"],
-    link: "https://derbreitesohn.github.io/CCL1-PawsUp/",
+    source: { href: "https://github.com/derbreitesohn/CCL1-PawsUp", label: "View source" },
+    demo: { href: "https://derbreitesohn.github.io/CCL1-PawsUp/", label: "Play in browser" },
     image: "/projects/pawsup.png",
   },
-
   {
     slug: "portfolio",
     title: "Portfolio_Madner",
     displayTitle: "The Flooded Museum",
     category: "Interactive 3D portfolio",
-    linkLabel: "View source & process",
     period: "04/2026 – Present",
     description: "My portfolio as a place to explore. Modelled and textured in Blender, then brought into the browser with Three.js: walk through the overgrown museum and open the projects inside its frames.",
     technologies: ["Blender", "Three.js", "Next.js", "TypeScript"],
-    link: "https://github.com/derbreitesohn/Portfolio_Madner",
+    source: { href: "https://github.com/derbreitesohn/Portfolio_Madner", label: "View source" },
+    demo: { href: "https://portfolio-madner.vercel.app", label: "Open live site" },
     image: "/museum/preview.webp",
   },
   {
@@ -157,12 +181,14 @@ export const projectsData = [
     title: "SteelFang",
     displayTitle: "SteelFang",
     category: "Game development",
-    linkLabel: "View source",
     period: "05/2026",
     description: "My first 2D platformer in Unity. A starting point for learning game development with C# before moving into larger game and 3D projects.",
     technologies: ["C#", "Unity"],
-    link: "https://github.com/derbreitesohn/SteelFang",
+    source: { href: "https://github.com/derbreitesohn/SteelFang", label: "View source" },
+    demo: null,
     image: "/projects/steelfang.png",
   },
-
 ];
+
+/** What a cover image or a single call-to-action should open: the live build when there is one. */
+export const primaryLink = (project: Project): ProjectLink => project.demo ?? project.source;
