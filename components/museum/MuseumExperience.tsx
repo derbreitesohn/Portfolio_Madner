@@ -123,7 +123,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
     <Viewport key={attempt} callbacks={callbacks} onEngine={onEngine} />
     <div className="museum-vignette" />
     <header className="museum-header">
-      <div className="museum-brand"><strong>MADNER<span>.</span></strong><small>THE FLOODED MUSEUM</small></div>
+      <div className="museum-brand"><strong>MADNER<span>.</span></strong></div>
       <nav aria-label="Museum navigation">
         <button className="museum-nav-button" onClick={gallery}><Grid2X2 size={16} /><span>Gallery</span><small>{visited.size}/06</small></button>
         {active && <button className="museum-icon-button" onClick={() => engine.current?.pause()} aria-label="Pause exploration"><Pause size={18} /></button>}
@@ -135,26 +135,22 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
       {(!ready || error) && <Image className="museum-preview" src="/museum/preview.webp" alt="" fill preload sizes="100vw" />}
       <div className="museum-welcome-shade" />
       <div className="museum-introduction">
-        <p className="museum-eyebrow">A SPACE FOR CURIOSITY</p>
         <h1>Flooded<br />museum<span>.</span></h1>
-        <p className="museum-description">Old stone. Still water. New ideas.<br />Step inside my world of code, games and design.</p>
         {error ? <p className="museum-load-error" role="alert">{error}</p> :
-          <p className="museum-load-label" role="status">{ready ? "Six projects. Your own pace." : `Opening the museum · ${progress}%`}</p>}
+          !ready && <p className="museum-load-label" role="status">{`Opening the museum · ${progress}%`}</p>}
         {!ready && !error && <div className="museum-progress" role="progressbar" aria-label="Loading museum" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${progress}%` }} /></div>}
         <div className="museum-welcome-actions">
           {error ? <button className="museum-primary" onClick={retry}>Try again <RotateCcw size={16} /></button> :
             <button className="museum-primary" onClick={play} disabled={!ready}>Enter the museum <ArrowRight size={18} /></button>}
           <button className="museum-text-button" onClick={gallery}>Browse the projects</button>
         </div>
-        <div className="museum-instructions">{touch ? "Move with the thumbstick · Drag to look · Tap a painting" : "WASD / arrows to walk · Mouse to look · Click a painting"}</div>
       </div>
-      <span className="museum-welcome-caption">DESIGNED & BUILT BY FLO MADNER</span>
     </div>}
 
     {entered && !active && !panel && <div className="museum-pause-wrap">
       <div className="museum-pause-card">
-        <p className="museum-eyebrow">{atExhibit ? `EXHIBIT ${atExhibit.number}` : "THE FLOODED MUSEUM"}</p>
-        <h2>{error ? "A brief interruption." : atExhibit ? atExhibit.title : "Take your time."}</h2>
+        {atExhibit && <p className="museum-eyebrow">{`EXHIBIT ${atExhibit.number}`}</p>}
+        <h2>{error ? "A brief interruption." : atExhibit ? atExhibit.title : "Paused"}</h2>
         <p>{error || (atExhibit ? "Your next project is right in front of you." : "Continue your walk, or choose a project from the gallery.")}</p>
         <button className="museum-primary" onClick={error ? retry : play} disabled={!ready && !error}>
           {error ? "Reload the museum" : ready ? "Continue walking" : `Opening · ${progress}%`} <ArrowRight size={18} />

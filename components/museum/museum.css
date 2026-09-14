@@ -17,7 +17,6 @@
 .museum-brand { text-shadow: 0 1px 8px #0008; }
 .museum-brand strong { font-size: 24px; font-weight: 900; letter-spacing: -.05em; }
 .museum-brand strong span, .museum h1 > span { color: #6b7280; }
-.museum-brand small { display: block; font-size: 8px; letter-spacing: .16em; opacity: .6; margin-top: 4px; }
 .museum-header nav { display: flex; align-items: center; gap: 10px; }
 .museum .museum-nav-button { display: flex; gap: 9px; align-items: center; padding: 10px 14px; border: 1px solid #ffffff28; border-radius: 4px; background: #05050570; backdrop-filter: blur(12px); font-size: 12px; }
 .museum .museum-nav-button { font-weight: 700; }
@@ -33,15 +32,12 @@
 .museum-introduction { position: absolute; top: 50%; left: 8%; transform: translateY(-45%); width: min(560px, 80vw); }
 .museum-eyebrow { font-weight: 700; color: var(--museum-accent); font-size: 10px; letter-spacing: .23em; margin-bottom: 23px; }
 .museum h1 { font: 900 clamp(54px, 6.9vw, 100px)/.95 var(--font-sans); letter-spacing: -.05em; text-transform: uppercase; }
-.museum-description { margin-top: 28px; font-size: 15px; line-height: 1.8; color: #d1d5db; }
 .museum-load-label { margin-top: 32px; color: var(--museum-muted); font-size: 11px; }
 .museum-progress { width: 280px; max-width: 90%; background: #ffffff15; height: 2px; margin-top: 12px; }
 .museum-progress span { display: block; background: var(--museum-accent); height: 100%; transition: width .2s; }
 .museum-welcome-actions { display: flex; flex-wrap: wrap; gap: 23px; align-items: center; margin-top: 22px; }
 .museum .museum-primary { display: inline-flex; justify-content: center; align-items: center; gap: 26px; border-radius: 3px; padding: 15px 23px; background: var(--museum-white); color: #050505; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; }
 .museum .museum-text-button { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; padding: 10px 0; color: #d1d5db; }
-.museum-instructions { margin-top: 28px; font-size: 10px; color: #9ca3af; }
-.museum-welcome-caption { position: absolute; bottom: 30px; right: 38px; color: #d1d5dba0; font-size: 8px; letter-spacing: .2em; }
 .museum-pause-wrap { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; pointer-events: none; background: #05050520; padding: 105px 20px 45px; }
 .museum-pause-card { width: min(450px, 100%); padding: 38px; border: 1px solid #ffffff25; border-radius: 3px; background: #0a0a0aed; backdrop-filter: blur(18px); text-align: center; box-shadow: 0 16px 80px #0004; pointer-events: auto; max-height: 100%; overflow: auto; }
 .museum-pause-card .museum-eyebrow { margin-bottom: 16px; }
@@ -95,21 +91,16 @@
 @media (max-width: 700px) {
   .museum-header { padding: 20px; gap: 6px; }
   .museum-brand strong { font-size: 18px; }
-  .museum-brand small { display: none; }
-  .museum-brand small { font-size: 6px; letter-spacing: .1em; }
   .museum-header nav { gap: 6px; }
   .museum .museum-nav-button { padding: 9px; gap: 6px; font-size: 10px; }
   .museum-nav-button small { display: none; }
   .museum-introduction { left: 8%; top: 49%; transform: translateY(-40%); width: 84%; }
   .museum h1 { font-size: clamp(42px, 11.5vw, 76px); }
-  .museum-description { font-size: 13px; margin-top: 23px; }
   .museum-eyebrow { font-size: 9px; margin-bottom: 20px; }
   .museum-welcome-actions { gap: 12px; }
   .museum .museum-primary { padding: 14px 19px; gap: 18px; font-size: 11px; }
   .museum .museum-text-button { font-size: 11px; }
-  .museum-welcome-caption { left: 8%; right: auto; bottom: 23px; font-size: 7px; }
   .museum-welcome-shade, .museum-has-scene .museum-welcome-shade { background: linear-gradient(90deg, #050505e0, #05050580); }
-  .museum-instructions { font-size: 9px; max-width: 275px; line-height: 1.8; }
   .museum-dialog { width: calc(100% - 20px); max-height: calc(100dvh - 24px); }
   .museum-dialog-inner { padding: 30px 22px; }
   .museum-project-grid { gap: 26px; grid-template-columns: 1fr; }
@@ -135,8 +126,7 @@
 @media (max-height: 570px) {
   .museum-introduction { transform: translateY(-35%); }
   .museum h1 { font-size: 47px; }
-  .museum-description { margin-top: 15px; }
-  .museum-eyebrow, .museum-instructions, .museum-welcome-caption { display: none; }
+  .museum-eyebrow { display: none; }
   .museum-load-label { margin-top: 18px; }
   .museum-pause-wrap { padding-top: 85px; padding-bottom: 15px; }
 }
