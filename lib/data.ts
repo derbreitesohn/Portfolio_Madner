@@ -107,8 +107,12 @@ export type Project = {
 
 // Live builds checked 14 September 2026. Re-check before publishing: a `demo`
 // that 404s is worse than no demo at all.
-//   liji-delta.vercel.app  404 — the repo has a Pages workflow but Pages is off.
-//   steel-fang.vercel.app  404 — Unity project, no web build committed.
+//   steelfang.vercel.app   200 — the WebGL build boots to the title screen.
+//                          Note the repo's `homepage` still points at
+//                          steel-fang.vercel.app (hyphenated), which 404s.
+//   liji-delta.vercel.app  200 — a project page about the Android app, not the
+//                          app itself, so it is labelled as such. There is no
+//                          APK on it and Liji cannot run in a browser.
 //   meniscus.vercel.app    200 but it is somebody else's component library,
 //                          not the Unity game. Do not link it, whatever the
 //                          repo's `homepage` field says.
@@ -149,7 +153,7 @@ export const projectsData: Project[] = [
       "A native Android wardrobe tracker with cost-per-wear calculations and sustainability scores. A local SQLite database keeps items and outfits available offline.",
     technologies: ["Kotlin", "Android Studio", "SQLite", "Figma", "Jetpack Compose"],
     source: { href: "https://github.com/derbreitesohn/Liji", label: "View source" },
-    demo: null,
+    demo: { href: "https://liji-delta.vercel.app", label: "View project page" },
     image: "/projects/liji.png",
   },
   {
@@ -185,7 +189,7 @@ export const projectsData: Project[] = [
     description: "My first 2D platformer in Unity. A starting point for learning game development with C# before moving into larger game and 3D projects.",
     technologies: ["C#", "Unity"],
     source: { href: "https://github.com/derbreitesohn/SteelFang", label: "View source" },
-    demo: null,
+    demo: { href: "https://steelfang.vercel.app", label: "Play in browser" },
     image: "/projects/steelfang.png",
   },
 ];

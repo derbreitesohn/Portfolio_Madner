@@ -22,10 +22,10 @@ const waitActive = (page) => page.waitForFunction(() => document.querySelector('
 const expected = [
   ['Pat Pat', 'Visit website', 'https://patpat-three.vercel.app', 'https://github.com/derbreitesohn/ss2025_ccl_'],
   ['Meniscus', 'View source', 'https://github.com/derbreitesohn/Meniscus', 'https://github.com/derbreitesohn/Meniscus'],
-  ['Liji: Virtual Closet Tracker', 'View source', 'https://github.com/derbreitesohn/Liji', 'https://github.com/derbreitesohn/Liji'],
+  ['Liji: Virtual Closet Tracker', 'View project page', 'https://liji-delta.vercel.app', 'https://github.com/derbreitesohn/Liji'],
   ['CCL1-PawsUp', 'Play in browser', 'https://derbreitesohn.github.io/CCL1-PawsUp/', 'https://github.com/derbreitesohn/CCL1-PawsUp'],
   ['Portfolio_Madner', 'Open live site', 'https://portfolio-madner.vercel.app', 'https://github.com/derbreitesohn/Portfolio_Madner'],
-  ['SteelFang', 'View source', 'https://github.com/derbreitesohn/SteelFang', 'https://github.com/derbreitesohn/SteelFang'],
+  ['SteelFang', 'Play in browser', 'https://steelfang.vercel.app', 'https://github.com/derbreitesohn/SteelFang'],
 ];
 
 // Assert the detail panel offers the right way in: the primary action, plus a
