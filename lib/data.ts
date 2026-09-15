@@ -113,9 +113,10 @@ export type Project = {
 //   liji-delta.vercel.app  200 — a project page about the Android app, not the
 //                          app itself, so it is labelled as such. There is no
 //                          APK on it and Liji cannot run in a browser.
-//   meniscus.vercel.app    200 but it is somebody else's component library,
-//                          not the Unity game. Do not link it, whatever the
-//                          repo's `homepage` field says.
+//   meniscus-two.vercel.app  200 — the WebGL build, boots to the title screen.
+//                          Plain meniscus.vercel.app, which is what the repo's
+//                          `homepage` field still points at, is somebody else's
+//                          component library. Never link that one.
 export const projectsData: Project[] = [
   {
     slug: "pat-pat",
@@ -140,7 +141,7 @@ export const projectsData: Project[] = [
       "A Unity game created during the fourth Creative Code Lab, bringing together custom Blender models and animations with Wwise audio integration.",
     technologies: ["Unity", "C#", "Blender", "Wwise"],
     source: { href: "https://github.com/derbreitesohn/Meniscus", label: "View source" },
-    demo: null,
+    demo: { href: "https://meniscus-two.vercel.app", label: "Play in browser" },
     image: "/projects/meniscus.png",
   },
   {
