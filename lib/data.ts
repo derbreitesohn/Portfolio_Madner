@@ -105,7 +105,7 @@ export type Project = {
   demo: ProjectLink | null;
 };
 
-// Live builds checked 14 September 2026. Re-check before publishing: a `demo`
+// Live builds checked 15 September 2026. Re-check before publishing: a `demo`
 // that 404s is worse than no demo at all.
 //   steelfang.vercel.app   200 — the WebGL build boots to the title screen.
 //                          Note the repo's `homepage` still points at
@@ -113,7 +113,10 @@ export type Project = {
 //   liji-delta.vercel.app  200 — a project page about the Android app, not the
 //                          app itself, so it is labelled as such. There is no
 //                          APK on it and Liji cannot run in a browser.
-//   meniscus-two.vercel.app  200 — the WebGL build, boots to the title screen.
+//   meniscus-game.vercel.app 200 — the WebGL build, boots to the title screen.
+//                          This is the `meniscus-game` project's own alias.
+//                          meniscus-two.vercel.app serves the same deployment
+//                          but is the older generated name, so prefer this one.
 //                          Plain meniscus.vercel.app, which is what the repo's
 //                          `homepage` field still points at, is somebody else's
 //                          component library. Never link that one.
@@ -141,7 +144,7 @@ export const projectsData: Project[] = [
       "A Unity game created during the fourth Creative Code Lab, bringing together custom Blender models and animations with Wwise audio integration.",
     technologies: ["Unity", "C#", "Blender", "Wwise"],
     source: { href: "https://github.com/derbreitesohn/Meniscus", label: "View source" },
-    demo: { href: "https://meniscus-two.vercel.app", label: "Play in browser" },
+    demo: { href: "https://meniscus-game.vercel.app", label: "Play in browser" },
     image: "/projects/meniscus.png",
   },
   {
