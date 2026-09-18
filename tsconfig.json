@@ -9,6 +9,9 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    // lib/museum modules are imported directly by the node test runner, which
+    // needs explicit extensions on relative specifiers.
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
