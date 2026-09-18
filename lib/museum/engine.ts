@@ -6,10 +6,14 @@ import { collisionWorld, MuseumPlayer, SPAWN } from "./physics";
 import { prepareModel, type Exhibit } from "./model";
 import type { Water } from "three/addons/objects/Water.js";
 
-const LOOK_SPEED = 0.0022;
+// Radians per pixel. Pointer lock reports raw mouse deltas and can travel
+// forever, so it stays the gentler of the two. A drag is bounded by the screen
+// it happens on, so it has to cover far more angle per pixel to feel equal.
+const MOUSE_LOOK_SPEED = 0.0034;
+const DRAG_LOOK_SPEED = 0.006;
 // Seconds to cover ~63% of the remaining angle. Low enough to stay responsive,
 // high enough to smooth jittery trackpad and touch deltas.
-const LOOK_SMOOTHING = 0.045;
+const LOOK_SMOOTHING = 0.028;
 
 export type MuseumCallbacks = {
   progress: (percent: number) => void;
@@ -239,7 +243,6 @@ export class MuseumEngine {
   };
 
   setStick = (x: number, y: number) => { this.stick = { x, y }; };
-  requestJump = () => { this.jump = true; };
   interact = () => { if (this.hovered) this.open(this.hovered); };
   setQuality = (balanced: boolean) => {
     this.balanced = balanced;
@@ -330,8 +333,9 @@ export class MuseumEngine {
     if (!locked && this.dragging?.id !== event.pointerId) return;
     const dx = locked ? event.movementX : event.clientX - this.dragging!.x;
     const dy = locked ? event.movementY : event.clientY - this.dragging!.y;
-    this.targetYaw -= dx * LOOK_SPEED;
-    this.targetPitch = Math.max(-1.35, Math.min(1.35, this.targetPitch - dy * LOOK_SPEED));
+    const speed = locked ? MOUSE_LOOK_SPEED : DRAG_LOOK_SPEED;
+    this.targetYaw -= dx * speed;
+    this.targetPitch = Math.max(-1.35, Math.min(1.35, this.targetPitch - dy * speed));
     if (this.dragging) { this.dragging.x = event.clientX; this.dragging.y = event.clientY; }
   };
   private pointerUp = (event: PointerEvent) => {

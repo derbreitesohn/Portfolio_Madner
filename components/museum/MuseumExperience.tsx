@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ArrowLeft, ArrowRight, ExternalLink, Grid2X2, Pause, RotateCcw, X } from "lucide-react";
-import { primaryLink } from "@/lib/data";
 import { museumProjects, type MuseumProject } from "@/lib/museum/projects";
 import type { MuseumEngine, MuseumCallbacks } from "@/lib/museum/engine";
 import { SPAWN } from "@/lib/museum/physics";
@@ -79,12 +78,18 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
   const [balanced, setBalanced] = useState(false);
   const [atExhibit, setAtExhibit] = useState<MuseumProject | null>(null);
   const [touch, setTouch] = useState(false);
+  // Closing a project returns you where you came from: to the walk if you
+  // clicked its frame, to the gallery if you were browsing the list.
+  const [fromGallery, setFromGallery] = useState(false);
+  const openPanel = useRef<"gallery" | MuseumProject | null>(null);
+  useEffect(() => { openPanel.current = panel; }, [panel]);
 
   const openProject = useCallback((id: string) => {
     const project = museumProjects.find((p) => p.id === id);
     if (!project) return;
     engine.current?.pause();
     setVisited((old) => new Set([...old, id]));
+    setFromGallery(openPanel.current === "gallery");
     setPanel(project);
   }, []);
   const callbacks = useMemo<MuseumCallbacks>(() => ({
@@ -108,6 +113,12 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
   }, []);
 
   const play = () => { setEntered(true); setAtExhibit(null); engine.current?.play(); };
+  // One step out of a project, not four: straight back into the walk.
+  const closeProject = () => {
+    if (fromGallery) { setPanel("gallery"); return; }
+    setPanel(null);
+    if (entered && ready && !error) play();
+  };
   const leaveMuseum = () => { engine.current?.pause(); onBack(); };
   const gallery = () => { engine.current?.pause(); setPanel("gallery"); };
   const visit = (project: MuseumProject) => {
@@ -163,7 +174,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
           <button onClick={() => { engine.current?.reset(); setAtExhibit(null); }}><RotateCcw size={13} /> Return to entrance</button>
           <label><input type="checkbox" checked={balanced} onChange={(e) => { setBalanced(e.target.checked); engine.current?.setQuality(e.target.checked); }} /> Lighter graphics</label>
         </div>
-        <small>{touch ? "Use the jump button to step out of the shallow pool." : "Space to jump · Shift to move faster · Esc to pause · G for gallery"}</small>
+        <small>{touch ? "Walk into a step or a kerb and you climb it by yourself." : "Space to jump · Shift to move faster · Esc to pause · G for gallery"}</small>
       </div>
     </div>}
 
@@ -172,7 +183,7 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
       {hoveredProject && <button className="museum-interact" onClick={() => openProject(hoveredProject.id)}><span>{hoveredProject.number}</span>{hoveredProject.title}<small>{touch ? "Tap to explore" : "Click or E to explore"}</small></button>}
       <div className="museum-location"><MuseumMap position={position} yaw={yaw} visited={visited} /><span>{Math.abs(position[0]) > 20 || Math.abs(position[2]) > 20 ? "THE GALLERIES" : "THE COURTYARD"}</span></div>
       <p className="museum-walk-hint">{touch ? "Drag the scene to look around" : "WASD · Walk     SPACE · Jump     ESC · Pause / exit     G · Gallery"}</p>
-      {touch && <div className="museum-touch-controls"><Joystick move={(x, y) => engine.current?.setStick(x, y)} /><button onPointerDown={() => engine.current?.requestJump()} className="museum-jump">Jump ↑</button></div>}
+      {touch && <div className="museum-touch-controls"><Joystick move={(x, y) => engine.current?.setStick(x, y)} /></div>}
     </>}
 
     {panel === "gallery" && <MuseumDialog title="Project gallery" close={() => setPanel(null)}>
@@ -189,15 +200,17 @@ export default function MuseumExperience({ onBack }: { onBack: () => void }) {
       </article>)}</div>
     </MuseumDialog>}
 
-    {panel && panel !== "gallery" && <MuseumDialog key={panel.id} title={panel.title} close={() => setPanel(null)}>
-      <button className="museum-text-button museum-collection-back" onClick={() => setPanel("gallery")}><ArrowLeft size={15} /> All projects</button>
+    {panel && panel !== "gallery" && <MuseumDialog key={panel.id} title={panel.title} close={closeProject}>
       <div className="museum-detail-image"><Image src={panel.image} alt={`${panel.title} preview`} fill sizes="(max-width: 900px) 90vw, 850px" /></div>
       <p className="museum-eyebrow">EXHIBIT {panel.number} · {panel.period}</p>
       <h2>{panel.title}</h2><p className="museum-project-description">{panel.description}</p>
       <ul className="museum-tags">{panel.technologies.map((tech) => <li key={tech}>{tech}</li>)}</ul>
-      <div className="museum-detail-actions"><a className="museum-primary" href={primaryLink(panel).href} target="_blank" rel="noopener noreferrer">{primaryLink(panel).label} <ExternalLink size={16} /></a>
-        {panel.demo && <a className="museum-secondary" href={panel.source.href} target="_blank" rel="noopener noreferrer">{panel.source.label} <ExternalLink size={14} /></a>}
-        {ready && !error && <button className="museum-text-button" onClick={() => visit(panel)}>Visit its frame <ArrowRight size={16} /></button>}
+      <div className="museum-detail-actions">
+        {panel.demo && <a className="museum-primary" href={panel.demo.href} target="_blank" rel="noopener noreferrer">{panel.demo.label} <ExternalLink size={16} /></a>}
+        <a className={panel.demo ? "museum-secondary" : "museum-primary"} href={panel.source.href} target="_blank" rel="noopener noreferrer">{panel.source.label} <ExternalLink size={14} /></a>
+        <button className="museum-text-button" onClick={closeProject}>
+          <ArrowLeft size={16} /> {fromGallery ? "All projects" : "Back to the museum"}
+        </button>
       </div>
     </MuseumDialog>}
   </section>;

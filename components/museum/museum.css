@@ -75,7 +75,6 @@
 .museum h3 { font: 800 20px/1.2 var(--font-sans); letter-spacing: -.025em; }
 .museum-project-grid article > p { font-size: 10px; color: #9ca3af; margin-top: 2px; }
 .museum .museum-visit { display: flex; gap: 8px; align-items: center; font-size: 10px; margin-top: 15px; color: var(--museum-accent); }
-.museum .museum-collection-back { margin-bottom: 19px; }
 .museum-detail-image { width: 100%; aspect-ratio: 2; position: relative; background: #050505; margin-bottom: 30px; border-radius: 4px; overflow: hidden; }
 .museum-detail-image img { object-fit: contain; }
 .museum-project-description { max-width: 700px; color: #d1d5db; font-size: 14px; line-height: 1.9; margin: 18px 0 24px; }
@@ -87,7 +86,6 @@
 .museum-joystick { position: absolute; bottom: max(45px, env(safe-area-inset-bottom)); left: 28px; width: 116px; height: 116px; border: 1px solid #ffffff40; border-radius: 50%; background: #0505054a; pointer-events: auto; touch-action: none; display: grid; place-items: center; }
 .museum-joystick > span { display: block; width: 46px; height: 46px; border: 1px solid #ffffff70; background: #ffffff40; border-radius: 50%; }
 .museum-joystick small { position: absolute; bottom: -23px; font-size: 8px; letter-spacing: .2em; color: #e5e7ebb0; }
-.museum .museum-jump { pointer-events: auto; touch-action: none; position: absolute; bottom: 65px; right: 32px; border: 1px solid #ffffff60; border-radius: 50%; width: 65px; height: 65px; background: #05050573; font-size: 11px; }
 @media (max-width: 700px) {
   .museum-header { padding: 20px; gap: 6px; }
   .museum-brand strong { font-size: 18px; }
