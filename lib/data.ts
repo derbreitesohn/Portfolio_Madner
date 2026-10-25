@@ -75,7 +75,7 @@ export const cvData = {
 };
 
 export const cvDocument = {
-  href: "/cv/flo-madner-cv-de-v2.pdf",
+  href: "/cv/madner-cv.pdf",
   filename: "Flo-Madner-CV-DE.pdf",
   details: "German · PDF · 1 page",
   updated: "16 September 2026",

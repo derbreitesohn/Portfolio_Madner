@@ -112,7 +112,7 @@ Run the development server or the production server on a given port, not both at
 
 ### Replace the CV
 
-1. Replace `public/cv/flo-madner-cv-de.pdf` with the new PDF.
+1. Replace `public/cv/madner-cv.pdf` with the new PDF.
 2. Update its language, page count and revision date in `cvDocument` in `lib/data.ts`.
 3. Update `cvData` when roles, dates or education change; the web text is not extracted from the PDF automatically.
 4. Check **View CV** and **Download CV** in the Background section.
